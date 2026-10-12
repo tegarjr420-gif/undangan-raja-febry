@@ -483,7 +483,7 @@ const REKENING = [
 ];
 /* Database ucapan (Supabase). Kunci ini memang publik; tabelnya dikunci aturan: tamu hanya bisa membaca dan menambah. */
 /* Google Sheets (utama). Isi dengan link Web App dari Apps Script. Kalau kosong, undangan memakai Supabase. */
-const SHEETS_URL = "";
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxon_PS-JRsZdA8oqA6_8Z7oliZVK806NC4V7svbe2exu-Z8qjT_Z6UgAMPJYCBV05NRQ/exec";
 const SUPABASE_URL = "https://jjkrkdyqkdhwmoathwbz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_M-c-ba8AfKp06mNyDStOag_wUqRu1MJ";
 const WA = { raja: "62881010021694", febry: "6289603200742" }; /* format: "6281234567890" (tanpa +, tanpa 0 di depan) */
@@ -1231,57 +1231,59 @@ function showWa(w) {
       }
     } catch (e) { /* fall through to Supabase */ }
   }
-  if (SHEETS_URL) {
-    let sig = null;
-    const load = async () => {
-      try {
-        const r = await fetch(SHEETS_URL, { cache: "no-store" });
-        if (!r.ok) throw new Error(r.status);
-        const j = await r.json();
-        const rows = (j && j.data) || [];
-        const s = rows.map(x => x.id).join();
-        if (s === sig) return;
-        sig = s;
-        renderWishes(rows.map(x => ({ id: x.id, data: () => x })));
-      } catch (e) {
-        if (sig === null) $("#tally").textContent = "Ucapan belum bisa dimuat. Coba muat ulang halaman.";
-      }
-    };
-    db = {
-      add: async w => {
-        // text/plain keeps this a "simple" request, so Google accepts it without a CORS preflight
-        const r = await fetch(SHEETS_URL, { method: "POST", body: JSON.stringify(w) });
-        const j = await r.json().catch(() => ({ ok: r.ok }));
-        if (!r.ok || !j.ok) throw new Error((j && j.error) || r.status);
-        load();
-      }
-    };
-    load();
-    setInterval(() => { if (!document.hidden) load(); }, 30000);
-    return;
-  }
-  if (SUPABASE_URL && SUPABASE_KEY) {
+  // Google Sheets first; if it cannot be reached, Supabase takes over so no wish is lost
+  const sheets = SHEETS_URL ? {
+    list: async () => {
+      const r = await fetch(SHEETS_URL, { cache: "no-store" });
+      if (!r.ok) throw new Error(r.status);
+      const j = await r.json();
+      if (!j || !j.ok) throw new Error("sheets");
+      return j.data || [];
+    },
+    add: async w => {
+      // text/plain keeps this a "simple" request, so Google accepts it without a CORS preflight
+      const r = await fetch(SHEETS_URL, { method: "POST", body: JSON.stringify(w) });
+      const j = await r.json().catch(() => null);
+      if (!r.ok || !j || !j.ok) throw new Error((j && j.error) || r.status);
+    }
+  } : null;
+  const supa = SUPABASE_URL && SUPABASE_KEY ? (() => {
     const api = SUPABASE_URL + "/rest/v1/ucapan";
     const headers = { apikey: SUPABASE_KEY, "Content-Type": "application/json" };
-    let sig = null;
-    const load = async () => {
-      try {
+    return {
+      list: async () => {
         const r = await fetch(api + "?select=id,nama,ucapan,hadir,jumlah,waktu&order=waktu.desc&limit=300", { headers });
         if (!r.ok) throw new Error(r.status);
-        const rows = await r.json();
-        const s = rows.map(x => x.id).join();
-        if (s === sig) return;
-        sig = s;
-        renderWishes(rows.map(x => ({ id: x.id, data: () => x })));
-      } catch (e) {
-        if (sig === null) $("#tally").textContent = "Ucapan belum bisa dimuat. Coba muat ulang halaman.";
-      }
-    };
-    db = {
+        return r.json();
+      },
       add: async w => {
         const r = await fetch(api, { method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(w) });
         if (!r.ok) throw new Error(r.status);
-        load();   // refresh the list in the background; don't make the guest wait
+      }
+    };
+  })() : null;
+  const stores = [sheets, supa].filter(Boolean);
+  if (stores.length) {
+    let sig = null, active = 0;
+    const load = async () => {
+      for (let i = active; i < stores.length; i++) {
+        try {
+          const rows = await stores[i].list();
+          active = i;
+          const s2 = rows.map(x => x.id).join();
+          if (s2 !== sig) { sig = s2; renderWishes(rows.map(x => ({ id: x.id, data: () => x }))); }
+          return;
+        } catch (e) { /* try the next store */ }
+      }
+      if (sig === null) $("#tally").textContent = "Ucapan belum bisa dimuat. Coba muat ulang halaman.";
+    };
+    db = {
+      add: async w => {
+        let lastErr;
+        for (let i = active; i < stores.length; i++) {
+          try { await stores[i].add(w); active = i; load(); return; } catch (e) { lastErr = e; }
+        }
+        throw lastErr || new Error("no store");
       }
     };
     load();
