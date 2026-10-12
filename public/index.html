@@ -46,7 +46,7 @@ p{margin:0;max-width:34ch}
 .btn svg{width:16px;height:16px}
 
 /* Cover */
-.cover{position:fixed;inset:0;z-index:20;display:grid;align-content:end;justify-items:center;text-align:center;padding:0 20px calc(48px + env(safe-area-inset-bottom,0px));background:var(--night);overflow:hidden;clip-path:circle(150% at var(--sx,50%) var(--sy,85%));transition:clip-path 1.25s cubic-bezier(.7,0,.25,1) .18s}
+.cover{position:fixed;inset:0;z-index:20;display:grid;align-content:end;justify-items:center;text-align:center;padding:0 20px calc(48px + env(safe-area-inset-bottom,0px));background:var(--night);overflow:hidden}
 .cover::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(23,32,27,.15) 0%,rgba(23,32,27,.35) 40%,rgba(23,32,27,.95) 78%)}
 .cover>*{position:relative}
 @media (max-width:600px){
@@ -54,7 +54,7 @@ p{margin:0;max-width:34ch}
   .cover>.cover-bg{inset:0 -1% auto;height:62%;background-position:36% 40%;animation-name:kbSoft}
   .cover::before{background:linear-gradient(180deg,rgba(23,32,27,.1) 0%,rgba(23,32,27,0) 30%,rgba(23,32,27,.85) 54%,var(--night) 62%)}
 }
-.cover.gone{clip-path:circle(0% at var(--sx,50%) var(--sy,85%));pointer-events:none}
+.cover.gone{visibility:hidden;pointer-events:none}
 .cover h1{font-family:var(--script);font-weight:400;font-size:clamp(3.1rem,14.5vw,4.4rem);line-height:1;margin:6px 0 4px;color:var(--ivory)}
 .cover .amp{color:var(--gold)}
 .guest{margin:22px 0 18px;display:grid;gap:4px}
@@ -169,6 +169,19 @@ footer{text-align:center;font-family:var(--sans);font-size:.7rem;color:var(--mut
 #qr img,#qr canvas{width:200px!important;height:200px!important}
 select{width:100%;font:inherit;font-size:1rem;color:var(--ivory);background:var(--moss);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 select:focus-visible{outline:2px solid var(--blush);outline-offset:3px}
+
+/* Opening: the card splits down the middle like a gatefold invitation */
+.door{position:fixed;inset:0;z-index:22;pointer-events:none;will-change:transform,opacity;backface-visibility:hidden}
+.door.l{clip-path:inset(0 50% 0 0);transform-origin:0% 50%}
+.door.r{clip-path:inset(0 0 0 50%);transform-origin:100% 50%}
+.doors-open .door.l{animation:doorL 1.5s cubic-bezier(.77,0,.18,1) forwards}
+.doors-open .door.r{animation:doorR 1.5s cubic-bezier(.77,0,.18,1) forwards}
+@keyframes doorL{0%{transform:perspective(1400px) translateX(0) rotateY(0)}100%{transform:perspective(1400px) translateX(-62%) rotateY(28deg);opacity:0}}
+@keyframes doorR{0%{transform:perspective(1400px) translateX(0) rotateY(0)}100%{transform:perspective(1400px) translateX(62%) rotateY(-28deg);opacity:0}}
+.flash{position:fixed;z-index:23;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,226,170,.85) 0%,rgba(212,173,110,.35) 30%,rgba(212,173,110,0) 65%);animation:flash 1.1s ease-out forwards}
+@keyframes flash{0%{transform:scale(.2);opacity:0}25%{opacity:1}100%{transform:scale(2.4);opacity:0}}
+body.reveal-in main{animation:mainIn 1.7s cubic-bezier(.2,.7,.2,1) both}
+@keyframes mainIn{from{transform:scale(1.06);opacity:.2;filter:blur(8px)}to{transform:none;opacity:1;filter:none}}
 
 /* ===== Animation ===== */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
@@ -712,16 +725,52 @@ musicBtn.addEventListener("click", () => {
 });
 
 // Open invitation
+let opening = false;
 $("#openBtn").addEventListener("click", () => {
+  if (opening) return;
+  opening = true;
   setMusicUi(Player.play());
-  const btn = $("#openBtn"), r = btn.querySelector(".seal-disc").getBoundingClientRect(), cv = $("#cover");
-  cv.style.setProperty("--sx", (r.left + r.width / 2) + "px");
-  cv.style.setProperty("--sy", (r.top + r.height / 2) + "px");
+  const btn = $("#openBtn"), cv = $("#cover");
+  const r = btn.querySelector(".seal-disc").getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const finish = () => {
+    cv.classList.add("gone");
+    document.body.classList.remove("locked");
+    document.body.classList.add("opened");
+    window.scrollTo(0, 0);
+  };
+  if (reduceMotion) { finish(); return; }
+
+  // 1. seal pressed + golden flash + burst of petals from the seal
   btn.classList.add("pressed");
-  cv.classList.add("gone");
-  document.body.classList.remove("locked");
-  document.body.classList.add("opened");
-  window.scrollTo(0, 0);
+  const fl = document.createElement("div");
+  fl.className = "flash"; fl.style.left = cx + "px"; fl.style.top = cy + "px";
+  document.body.appendChild(fl);
+  setTimeout(() => fl.remove(), 1200);
+  if (window.petalBurst) window.petalBurst(cx, cy);
+
+  // 2. the card splits into two halves that swing open
+  setTimeout(() => {
+    const wrap = document.createElement("div");
+    ["l", "r"].forEach(side => {
+      const d = cv.cloneNode(true);
+      d.removeAttribute("id");
+      d.querySelectorAll("[id]").forEach(n => n.removeAttribute("id"));
+      d.className = "cover door " + side;
+      d.setAttribute("aria-hidden", "true");
+      // freeze every element exactly where it is now, so the split starts from the same picture
+      const bgNow = getComputedStyle(cv.querySelector(".cover-bg")).transform;
+      [...d.children].forEach(n => { n.style.animation = "none"; n.style.opacity = "1"; });
+      const bg = d.querySelector(".cover-bg");
+      if (bg && bgNow && bgNow !== "none") bg.style.transform = bgNow;
+      wrap.appendChild(d);
+    });
+    document.body.appendChild(wrap);
+    document.body.classList.add("reveal-in");
+    finish();
+    requestAnimationFrame(() => wrap.classList.add("doors-open"));
+    setTimeout(() => { wrap.remove(); document.body.classList.remove("reveal-in"); }, 1700);
+  }, 380);
 });
 document.body.classList.add("locked");
 
@@ -914,6 +963,14 @@ if (!reduceMotion) (() => {
   const flies = Array.from({ length: 22 }, () => ({
     x: rnd(0, W), y: rnd(0, H), r: rnd(1, 2.4), vx: rnd(-.15, .15), vy: rnd(-.3, -.06), p: rnd(0, 6.28)
   }));
+  const burst = [];
+  const tones = ["230,184,173", "243,236,224", "212,173,110", "236,211,160"];
+  window.petalBurst = (bx, by) => {
+    for (let i = 0; i < 70; i++) {
+      const ang = rnd(0, Math.PI * 2), sp = rnd(2.5, 9);
+      burst.push({ x: bx, y: by, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - rnd(2, 5), s: rnd(5, 12), r: rnd(0, 6.28), vr: rnd(-.15, .15), sw: rnd(0, 6.28), c: tones[i % tones.length], life: 1, decay: rnd(.004, .008) });
+    }
+  };
   const frame = () => {
     requestAnimationFrame(frame);
     if (document.hidden) return;
@@ -936,6 +993,22 @@ if (!reduceMotion) (() => {
       x.translate(p.x, p.y); x.rotate(p.r);
       x.scale(1, Math.abs(Math.cos(p.sw)) * .6 + .4);
       x.fillStyle = `rgba(${p.c},${p.a})`;
+      x.beginPath();
+      x.moveTo(0, -p.s);
+      x.quadraticCurveTo(p.s, -p.s * .2, 0, p.s);
+      x.quadraticCurveTo(-p.s, -p.s * .2, 0, -p.s);
+      x.fill();
+      x.restore();
+    }
+    for (let i = burst.length - 1; i >= 0; i--) {
+      const p = burst[i];
+      p.vx *= .985; p.vy = p.vy * .985 + .09; p.sw += .05;
+      p.x += p.vx + Math.sin(p.sw) * .6; p.y += p.vy; p.r += p.vr; p.life -= p.decay;
+      if (p.life <= 0 || p.y > H + 40) { burst.splice(i, 1); continue; }
+      x.save();
+      x.translate(p.x, p.y); x.rotate(p.r);
+      x.scale(1, Math.abs(Math.cos(p.sw)) * .6 + .4);
+      x.fillStyle = `rgba(${p.c},${Math.min(1, p.life * 1.4) * .9})`;
       x.beginPath();
       x.moveTo(0, -p.s);
       x.quadraticCurveTo(p.s, -p.s * .2, 0, p.s);
