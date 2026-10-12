@@ -51,8 +51,7 @@ p{margin:0;max-width:34ch}
 .cover>*{position:relative}
 @media (max-width:600px){
   /* Phones: photo on top, text below it, so names never sit over the faces */
-  /* No slow zoom on phones: a scaling layer is drawn softer by mobile browsers */
-  .cover>.cover-bg{inset:0 0 auto;height:62%;background-position:36% 40%;animation:none}
+  .cover>.cover-bg{inset:0 -1% auto;height:62%;background-position:36% 40%;animation-name:kbSoft}
   .cover::before{background:linear-gradient(180deg,rgba(23,32,27,.1) 0%,rgba(23,32,27,0) 30%,rgba(23,32,27,.85) 54%,var(--night) 62%)}
 }
 .cover.gone{transform:translateY(-100%);opacity:0;pointer-events:none}
