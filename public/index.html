@@ -488,7 +488,8 @@ const REKENING = [
 /* Database ucapan (Supabase). Kunci ini memang publik; tabelnya dikunci aturan: tamu hanya bisa membaca dan menambah. */
 /* Google Sheets (utama). Isi dengan link Web App dari Apps Script. Kalau kosong, undangan memakai Supabase. */
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxon_PS-JRsZdA8oqA6_8Z7oliZVK806NC4V7svbe2exu-Z8qjT_Z6UgAMPJYCBV05NRQ/exec";
-const SUPABASE_URL = "https://jjkrkdyqkdhwmoathwbz.supabase.co";
+/* Cadangan Supabase dimatikan (tabelnya sudah dihapus). Ucapan yang gagal terkirim ke Sheets disimpan di HP tamu dan dikirim ulang otomatis. */
+const SUPABASE_URL = "";
 const SUPABASE_KEY = "sb_publishable_M-c-ba8AfKp06mNyDStOag_wUqRu1MJ";
 const WA = { raja: "62881010021694", febry: "6289603200742" }; /* format: "6281234567890" (tanpa +, tanpa 0 di depan) */
 const UCAPAN_CEPAT = [
