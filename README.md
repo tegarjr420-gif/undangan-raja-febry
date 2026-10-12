@@ -1,4 +1,4 @@
-# Undangan Raja & Febry
+# Undangan Raja & Febri
 
 Undangan pernikahan digital satu halaman. Dideploy otomatis oleh Cloudflare (wrangler.jsonc) setiap ada perubahan di branch utama.
 
@@ -7,4 +7,4 @@ Undangan pernikahan digital satu halaman. Dideploy otomatis oleh Cloudflare (wra
 - Ucapan & RSVP disimpan di Supabase (project `undangan-raja-febry`, tabel `ucapan`)
 
 Link tamu: tambahkan nama di akhir alamat, misalnya `/#Budi_Santoso`.
-Tambahkan `-r` (tamu Raja) atau `-f` (tamu Febry) untuk menyorot tombol WA yang sesuai: `/#Budi_Santoso-r`.
+Tambahkan `-r` (tamu Raja) atau `-f` (tamu Febri) untuk menyorot tombol WA yang sesuai: `/#Budi_Santoso-r`.

@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Undangan pernikahan Raja &amp; Febry. Resepsi Sabtu, 2 Januari 2027.">
+<meta name="description" content="Undangan pernikahan Raja &amp; Febri. Resepsi Sabtu, 2 Januari 2027.">
 <meta name="theme-color" content="#17201b">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Undangan Pernikahan Raja &amp; Febry">
+<meta property="og:title" content="Undangan Pernikahan Raja &amp; Febri">
 <meta property="og:description" content="Resepsi Sabtu, 2 Januari 2027. Kami mengundang Anda untuk hadir dan memberikan doa restu.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317201b'/%3E%3Ctext x='32' y='45' font-size='40' text-anchor='middle' fill='%23d4ad6e' font-family='Georgia,serif' font-style='italic'%3E%26%3C/text%3E%3C/svg%3E">
-<title>Raja &amp; Febry</title>
+<title>Raja &amp; Febri</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@400;500&display=swap">
 <style>
@@ -74,6 +74,11 @@ p{margin:0;max-width:34ch}
 .person .arch{width:min(240px,100%)}
 .and{font-family:var(--script);font-size:3.4rem;color:var(--gold);line-height:1}
 .ig{font-family:var(--sans);font-size:.8rem;color:var(--muted)}
+.ig a{color:var(--gold);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .3s}
+.ig a:hover{border-bottom-color:var(--gold)}
+.ig a:focus-visible{outline:2px solid var(--blush);outline-offset:3px}
+.turut{display:grid;gap:2px;justify-items:center;font-size:1rem;color:var(--muted);margin:0;padding:0;list-style:none}
+.turut li{max-width:34ch}
 .fullname{font-size:1.15rem;font-weight:600;letter-spacing:.02em}
 .ph{color:var(--blush);font-style:italic;border-bottom:1px dashed var(--blush)}
 .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px}
@@ -135,7 +140,12 @@ footer{text-align:center;font-family:var(--sans);font-size:.7rem;color:var(--mut
 .nav button.on{color:var(--night);background:var(--gold)}
 .nav svg{width:18px;height:18px}
 .music{position:fixed;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:10;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:var(--night);text-decoration:none}
+.music{border:0;cursor:pointer;padding:0}
 .music svg{width:20px;height:20px}
+.music .ic-off{display:none}
+.music:not(.playing) .ic-on{display:none}
+.music:not(.playing) .ic-off{display:block}
+.music:focus-visible{outline:2px solid var(--blush);outline-offset:3px}
 /* ===== Animation ===== */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.14) translate(-1.5%,-1%)}}
@@ -165,8 +175,8 @@ body.opened .hero>:nth-child(4){animation-delay:1.5s}
 body.opened .hero>h1{animation:writeIn 1.9s .55s cubic-bezier(.6,.1,.2,1) both}
 .hero .arch img{animation:breathe 10s ease-in-out infinite alternate}
 body.opened .nav{animation:navUp .8s 1s both}
-.music{animation:glow 2.6s infinite}
-.music svg{animation:floaty 2.4s ease-in-out infinite}
+.music.playing{animation:glow 2.6s infinite}
+.music.playing svg{animation:floaty 2.4s ease-in-out infinite}
 
 .anim{transition:opacity .9s ease,transform 1.1s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
 .pre{opacity:0;transform:translateY(32px)}
@@ -207,7 +217,7 @@ h2.pre::after{width:0}
 <div class="cover" id="cover">
   <div class="cover-bg" aria-hidden="true"></div>
   <span class="eyebrow">Undangan Pernikahan</span>
-  <h1><span class="shimmer">Raja <span class="amp">&amp;</span> Febry</span></h1>
+  <h1><span class="shimmer">Raja <span class="amp">&amp;</span> Febri</span></h1>
   <div class="guest">
     <span class="muted">Kepada Yth. Bapak/Ibu/Saudara/i</span>
     <strong id="guestName">Tamu Undangan</strong>
@@ -223,8 +233,8 @@ h2.pre::after{width:0}
   <!-- HERO -->
   <section class="hero" id="home">
     <span class="eyebrow">The Wedding of</span>
-    <div class="arch"><img src="couple.jpg" alt="Raja dan Febry di dermaga saat senja" style="object-position:52% center"></div>
-    <h1><span class="shimmer">Raja &amp; Febry</span></h1>
+    <div class="arch"><img src="couple.jpg" alt="Raja dan Febri di dermaga saat senja" style="object-position:52% center"></div>
+    <h1><span class="shimmer">Raja &amp; Febri</span></h1>
     <span class="date" id="heroDate">Tanggal segera diumumkan</span>
   </section>
 
@@ -236,19 +246,19 @@ h2.pre::after{width:0}
     <div class="person">
       <div class="arch"><img src="raja.jpg" alt="Raja" style="object-position:center 42%"></div>
       <div class="name">Raja</div>
-      <p class="fullname"><span class="ph">Nama lengkap Raja</span></p>
-      <p class="muted">Putra <span class="ph">ke-…</span> dari<br>Bapak Muri &amp; Ibu Eneng (Nuraeni)</p>
-      <p class="ig"><span class="ph">@instagram Raja</span></p>
+      <p class="fullname">Muhamad Raja Ardiansyah</p>
+      <p class="muted">Putra kedua dari<br>Bapak Muriyadi &amp; Ibu Nuraeni</p>
+      <p class="ig"><a href="https://www.instagram.com/rajaaa.ard/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>@rajaaa.ard</a></p>
     </div>
 
     <div class="and" aria-hidden="true">&amp;</div>
 
     <div class="person">
-      <div class="arch"><img src="febry.jpg" alt="Febry" style="object-position:center 35%"></div>
-      <div class="name">Febry</div>
-      <p class="fullname"><span class="ph">Nama lengkap Febry</span></p>
-      <p class="muted">Putri <span class="ph">ke-…</span> dari<br>Bapak <span class="ph">nama ayah</span> &amp; Ibu <span class="ph">nama ibu</span></p>
-      <p class="ig"><span class="ph">@instagram Febry</span></p>
+      <div class="arch"><img src="febry.jpg" alt="Febri" style="object-position:center 35%"></div>
+      <div class="name">Febri</div>
+      <p class="fullname">Febri Yanti</p>
+      <p class="muted">Putri keenam dari<br>Bapak Marda &amp; Ibu Nurhati</p>
+      <p class="ig"><a href="https://www.instagram.com/fbr_iyntii/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>@fbr_iyntii</a></p>
     </div>
   </section>
 
@@ -263,7 +273,7 @@ h2.pre::after{width:0}
   <!-- ACARA -->
   <section id="event">
     <span class="eyebrow">Save the Date</span>
-    <h2>Rangkaian Acara</h2>
+    <h2>Resepsi Pernikahan</h2>
     <div class="count" id="count" hidden>
       <div><b id="cd-d">0</b><span>Hari</span></div>
       <div><b id="cd-h">0</b><span>Jam</span></div>
@@ -278,9 +288,9 @@ h2.pre::after{width:0}
     <span class="eyebrow">Our Moment</span>
     <h2>Galeri</h2>
     <div class="gallery">
-      <button class="wide" type="button" data-src="couple.jpg"><img src="couple.jpg" alt="Raja dan Febry bersama"></button>
+      <button class="wide" type="button" data-src="couple.jpg"><img src="couple.jpg" alt="Raja dan Febri bersama"></button>
       <button class="tall" type="button" data-src="raja.jpg"><img src="raja.jpg" alt="Raja"></button>
-      <button class="tall" type="button" data-src="febry.jpg"><img src="febry.jpg" alt="Febry"></button>
+      <button class="tall" type="button" data-src="febry.jpg"><img src="febry.jpg" alt="Febri"></button>
     </div>
   </section>
 
@@ -321,29 +331,25 @@ h2.pre::after{width:0}
     <h2>Tanda Kasih</h2>
     <p>Doa restu Anda adalah hadiah terindah bagi kami. Bila ingin memberi tanda kasih, informasinya ada di bawah ini.</p>
     <div id="banks" style="display:grid;gap:12px;width:100%"></div>
-    <div class="event">
-      <span class="eyebrow">Kirim Kado</span>
-      <p class="fullname"><span class="ph">Nama penerima kado</span></p>
-      <p class="muted"><span class="ph">Alamat lengkap pengiriman kado</span></p>
-    </div>
   </section>
 
   <!-- PENUTUP -->
   <section class="closing">
     <p>Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila <b id="guestName2">Bapak/Ibu/Saudara/i</b> berkenan hadir dan memberikan doa restu.</p>
     <span class="eyebrow">Kami yang berbahagia</span>
-    <h1><span class="shimmer">Raja &amp; Febry</span></h1>
-    <p class="muted">Keluarga Bapak Muri &amp; Ibu Eneng (Nuraeni)<br>Keluarga Bapak <span class="ph">nama ayah</span> &amp; Ibu <span class="ph">nama ibu</span></p>
+    <h1><span class="shimmer">Raja &amp; Febri</span></h1>
+    <p class="muted">Keluarga Bapak Muriyadi &amp; Ibu Nuraeni<br>Keluarga Bapak Marda &amp; Ibu Nurhati</p>
     <span class="eyebrow">Turut Mengundang</span>
-    <p class="muted"><span class="ph">Keluarga Besar Bpk. … &amp; Ibu …</span><br><span class="ph">Keluarga Besar Bpk. … &amp; Ibu …</span><br><span class="ph">Keluarga Besar Bpk. … &amp; Ibu …</span></p>
+    <ul class="turut" id="turut"></ul>
     <p class="eyebrow">Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
   </section>
-  <footer>Raja &amp; Febry · 2026</footer>
+  <footer>Raja &amp; Febri · 2027</footer>
 </main>
 
-<a class="music" href="https://www.youtube.com/watch?v=ZeFpigRaXbI" target="_blank" rel="noopener" aria-label="Putar lagu di YouTube" title="Putar lagu di YouTube">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-</a>
+<button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="Putar musik" title="Putar musik">
+  <svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+  <svg class="ic-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M3 3l18 18"/></svg>
+</button>
 
 <nav class="nav" aria-label="Navigasi">
   <button type="button" data-go="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/></svg>Home</button>
@@ -360,22 +366,50 @@ h2.pre::after{width:0}
 /* ===== DATA UNDANGAN — isi bagian ini saat informasinya sudah ada ===== */
 const MAPS = "https://maps.app.goo.gl/VHadyFS3yDngNn218?g_st=ac";
 const ACARA = [
-  { nama: "Akad Nikah", tanggal: null /* contoh: "2026-12-20T08:00:00+07:00" */, jam: "" /* contoh: "08.00 WIB – selesai" */, tempat: "", alamat: "", maps: MAPS },
-  { nama: "Resepsi",    tanggal: "2027-01-02T07:00:00+07:00", jam: "07.00 WIB – selesai", tempat: "", alamat: "", maps: MAPS }
+  { nama: "Resepsi", tanggal: "2027-01-02T07:00:00+07:00", jam: "07.00 WIB – selesai",
+    tempat: "Kp. Peusar RT 002 / RW 001", alamat: "Kel. Binong, Kec. Curug, Kab. Tangerang, Banten 15810", maps: MAPS }
 ];
-const REKENING = [ /* contoh: { bank: "BCA", nomor: "1234567890", atasNama: "Raja" } */ ];
+const REKENING = [
+  { bank: "ShopeePay", nomor: "0881010021694", atasNama: "Muhamad Raja Ardiansyah" },
+  { bank: "BCA", nomor: "8881267608", atasNama: "Febri Yanti" }
+];
 /* Database ucapan (Supabase). Kunci ini memang publik; tabelnya dikunci aturan: tamu hanya bisa membaca dan menambah. */
 const SUPABASE_URL = "https://jjkrkdyqkdhwmoathwbz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_M-c-ba8AfKp06mNyDStOag_wUqRu1MJ";
-const WA = { raja: "", febry: "" }; /* format: "6281234567890" (tanpa +, tanpa 0 di depan) */
+const WA = { raja: "62881010021694", febry: "6289603200742" }; /* format: "6281234567890" (tanpa +, tanpa 0 di depan) */
 const UCAPAN_CEPAT = [
-  { label: "Sakinah mawaddah warahmah", teks: "Selamat menempuh hidup baru, Raja & Febry! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin." },
-  { label: "Barakallahu lakuma", teks: "Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fii khair. Selamat ya Raja & Febry!" },
-  { label: "Langgeng selalu", teks: "Selamat ya Raja & Febry! Semoga langgeng sampai kakek nenek, selalu kompak dan saling menguatkan." },
-  { label: "Bahagia dunia akhirat", teks: "Selamat atas pernikahannya! Semoga rumah tangga Raja & Febry penuh berkah dan bahagia dunia akhirat." },
-  { label: "Maaf belum bisa hadir", teks: "Mohon maaf belum bisa hadir. Doa terbaik untuk Raja & Febry, semoga lancar sampai hari H dan bahagia selalu.", hadir: "Tidak hadir" },
-  { label: "Doa dari jauh", teks: "Maaf tidak bisa datang, tapi doa terbaik selalu menyertai. Selamat menempuh hidup baru, Raja & Febry! Semoga sakinah, mawaddah, warahmah.", hadir: "Tidak hadir" },
-  { label: "Barakallah dari jauh", teks: "Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fii khair. Mohon maaf belum bisa hadir, semoga Raja & Febry bahagia selalu.", hadir: "Tidak hadir" }
+  { label: "Sakinah mawaddah warahmah", teks: "Selamat menempuh hidup baru, Raja & Febri! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Aamiin." },
+  { label: "Barakallahu lakuma", teks: "Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fii khair. Selamat ya Raja & Febri!" },
+  { label: "Langgeng selalu", teks: "Selamat ya Raja & Febri! Semoga langgeng sampai kakek nenek, selalu kompak dan saling menguatkan." },
+  { label: "Bahagia dunia akhirat", teks: "Selamat atas pernikahannya! Semoga rumah tangga Raja & Febri penuh berkah dan bahagia dunia akhirat." },
+  { label: "Maaf belum bisa hadir", teks: "Mohon maaf belum bisa hadir. Doa terbaik untuk Raja & Febri, semoga lancar sampai hari H dan bahagia selalu.", hadir: "Tidak hadir" },
+  { label: "Doa dari jauh", teks: "Maaf tidak bisa datang, tapi doa terbaik selalu menyertai. Selamat menempuh hidup baru, Raja & Febri! Semoga sakinah, mawaddah, warahmah.", hadir: "Tidak hadir" },
+  { label: "Barakallah dari jauh", teks: "Barakallahu lakuma wa baraka 'alaikuma wa jama'a bainakuma fii khair. Mohon maaf belum bisa hadir, semoga Raja & Febri bahagia selalu.", hadir: "Tidak hadir" }
+];
+/* Tambah nama baru cukup dengan menambah satu baris di daftar ini */
+const TURUT_MENGUNDANG = [
+  "Kel. Besar Alm. Abah Sainan",
+  "Kel. Besar Alm. Abah Tompel",
+  "Kel. Besar Alm. Abah Hasan",
+  "Bpk. Enjun (Orang Tua)",
+  "Ibu Nani (Orang Tua)",
+  "Bpk. Yahya (Orang Tua)",
+  "Bpk. Marda (Besan Binong)",
+  "Bpk. Ustadz Ayyub (Guru)",
+  "Bpk. Ono (Paman)",
+  "Bpk. Enjen (Paman)",
+  "Bpk. Dadang (Kakak)",
+  "Bpk. Sumanta (Kakak)",
+  "Bpk. Gusti (Kakak)",
+  "Bpk. Harun / Alung (Uwa Binong)",
+  "Bpk. Agus (Paman Binong)",
+  "Bpk. Yanih / Ambon (Kakak)",
+  "Bpk. Hj. Asmuni (DKM Masjid Jami Al-Barokah)",
+  "Bpk. Lukman (Uwa)",
+  "Bpk. Hj. Kuding (Orang Tua)",
+  "Bpk. Husdi Supriyatna (Paman)",
+  "Bpk. Muhidin (Ketua RW 001)",
+  "Bpk. Suminto (Ketua RT 002)"
 ];
 /* ===================================================================== */
 
@@ -385,7 +419,7 @@ const bulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus
 const fmt = d => `${hari[d.getDay()]}, ${d.getDate()} ${bulan[d.getMonth()]} ${d.getFullYear()}`;
 
 // Guest name from link, e.g. ...#Budi_Santoso
-// Optional side tag at the end: ...#Budi_Santoso-r (tamu Raja) or -f (tamu Febry)
+// Optional side tag at the end: ...#Budi_Santoso-r (tamu Raja) or -f (tamu Febri)
 let raw = "";
 try { raw = decodeURIComponent((location.hash || "").slice(1)); } catch (e) { raw = ""; }
 let side = "";
@@ -399,8 +433,163 @@ if (raw && !known.includes(raw.toLowerCase())) {
   $("#f-nama").value = raw.slice(0, 60);
 }
 
+// ===== Musik latar: dibuat langsung oleh kode (Web Audio), tanpa file lagu =====
+// Progresi akor ala "Canon in D" (klasik pernikahan, domain publik), tempo pelan,
+// petikan lembut seperti kecapi/harpa, pad hangat, dan melodi lonceng yang jarang.
+const Music = (() => {
+  const BPM = 64, E = 60 / BPM / 2;              // durasi satu ketukan seperdelapan
+  const PROG = [                                  // [bass, akor] per birama: D A Bm F#m G D G A
+    [50, [62, 66, 69]], [45, [61, 64, 69]], [47, [62, 66, 71]], [42, [61, 66, 69]],
+    [43, [62, 67, 71]], [38, [62, 66, 69]], [43, [62, 67, 71]], [45, [61, 64, 69]]
+  ];
+  const PATTERNS = [[0,1,2,3,4,3,2,1], [0,2,4,2,3,2,1,2], [0,1,2,4,3,2,1,0], [0,2,1,3,2,4,3,1]];
+  const hz = m => 440 * Math.pow(2, (m - 69) / 12);
+
+  function voices(ctx, out) {
+    const env = (g, t, a, peak, d) => {
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(peak, t + a);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + a + d);
+    };
+    const osc = (type, f, t, end, dest, detune = 0) => {
+      const o = ctx.createOscillator();
+      o.type = type; o.frequency.value = f; o.detune.value = detune;
+      o.connect(dest); o.start(t); o.stop(end);
+      o.onended = () => o.disconnect();
+      return o;
+    };
+    const sub = (gain, dest) => { const g = ctx.createGain(); g.gain.value = gain; g.connect(dest); return g; };
+    return {
+      pluck(t, m, v, d = 1.8) {                    // petikan lembut
+        const g = ctx.createGain(), lp = ctx.createBiquadFilter();
+        lp.type = "lowpass";
+        lp.frequency.setValueAtTime(3000, t);
+        lp.frequency.exponentialRampToValueAtTime(800, t + d);
+        g.connect(lp).connect(out); env(g, t, 0.006, v, d);
+        osc("triangle", hz(m), t, t + d + 0.1, g);
+        osc("sine", hz(m) * 2, t, t + d + 0.1, sub(0.3, g));
+      },
+      bell(t, m, v, d = 3) {                       // melodi lonceng
+        const g = ctx.createGain(); g.connect(out); env(g, t, 0.012, v, d);
+        osc("sine", hz(m), t, t + d + 0.1, g);
+        osc("sine", hz(m) * 3, t, t + d + 0.1, sub(0.08, g));
+      },
+      pad(t, notes, d) {                           // latar hangat
+        const g = ctx.createGain(), lp = ctx.createBiquadFilter();
+        lp.type = "lowpass"; lp.frequency.value = 1000;
+        g.connect(lp).connect(out);
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.022, t + 1.4);
+        g.gain.setValueAtTime(0.022, t + d - 0.2);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + d + 1.6);
+        notes.forEach(m => { osc("sine", hz(m - 12), t, t + d + 1.7, g, -6); osc("triangle", hz(m - 12), t, t + d + 1.7, g, 6); });
+      },
+      bass(t, m, d) {
+        const g = ctx.createGain(); g.connect(out); env(g, t, 0.05, 0.14, d);
+        osc("sine", hz(m), t, t + d + 0.1, g);
+        osc("sine", hz(m + 12), t, t + d + 0.1, sub(0.3, g));   // supaya tetap terdengar di speaker HP
+      }
+    };
+  }
+
+  function makeSchedule(v) {
+    let last = 78;
+    return (step, t) => {
+      const bar = Math.floor(step / 8) % 8, beat = step % 8, loop = Math.floor(step / 64);
+      const [b, tri] = PROG[bar];
+      const tones = [...tri, ...tri.map(n => n + 12)];
+      if (beat === 0) { v.bass(t, b, E * 8 * 0.95); v.pad(t, tri, E * 8); }
+      const pat = PATTERNS[(bar + loop) % PATTERNS.length];
+      if (!(step < 8 && beat % 2)) v.pluck(t, tones[pat[beat]], beat === 0 ? 0.13 : 0.08);
+      // melodi mulai di birama ketiga, sesekali istirahat supaya tidak ramai
+      if (step >= 16 && [0, 3, 4, 6].includes(beat) && Math.random() < (beat === 0 ? 0.85 : 0.45)) {
+        const cand = tri.map(n => n + 12).concat(tri.map(n => n + 24)).filter(n => n <= 86);
+        cand.sort((a, c) => Math.abs(a - last) - Math.abs(c - last));
+        const n = cand[Math.random() < 0.7 ? 0 : Math.min(1, cand.length - 1)];
+        last = n;
+        v.bell(t, n, 0.075, beat === 0 ? 3.4 : 2.4);
+      }
+    };
+  }
+
+  function impulse(ctx) {
+    const len = Math.floor(ctx.sampleRate * 2.8), buf = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = buf.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); }
+    return buf;
+  }
+  function silentWav() {                          // bantu iPhone: tetap berbunyi walau mode senyap
+    const n = 4000, b = new Uint8Array(44 + n), dv = new DataView(b.buffer);
+    const w = (o, str) => { for (let i = 0; i < str.length; i++) b[o + i] = str.charCodeAt(i); };
+    w(0, "RIFF"); dv.setUint32(4, 36 + n, true); w(8, "WAVE"); w(12, "fmt ");
+    dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+    dv.setUint32(24, 8000, true); dv.setUint32(28, 8000, true); dv.setUint16(32, 1, true); dv.setUint16(34, 8, true);
+    w(36, "data"); dv.setUint32(40, n, true); b.fill(128, 44);
+    let bin = ""; b.forEach(x => bin += String.fromCharCode(x));
+    return "data:audio/wav;base64," + btoa(bin);
+  }
+
+  let ctx = null, master = null, timer = null, next = 0, step = 0, on = false, sched = null, keep = null, stopT = null;
+  function build() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    ctx = new AC();
+    master = ctx.createGain(); master.gain.value = 0.0001;
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -16; comp.ratio.value = 3;
+    const rev = ctx.createConvolver(); rev.buffer = impulse(ctx);
+    const wet = ctx.createGain(); wet.gain.value = 0.3;
+    master.connect(comp); master.connect(rev); rev.connect(wet); wet.connect(comp);
+    comp.connect(ctx.destination);
+    sched = makeSchedule(voices(ctx, master));
+    return true;
+  }
+  const tick = () => { while (next < ctx.currentTime + 0.2) { sched(step, next); next += E; step++; } };
+  const run = () => { if (!timer) { next = ctx.currentTime + 0.12; timer = setInterval(tick, 50); } };
+  const halt = () => { clearInterval(timer); timer = null; };
+  function play() {
+    if (!ctx && !build()) return false;
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) {}
+    try { if (!keep) { keep = new Audio(silentWav()); keep.loop = true; } keep.play().catch(() => {}); } catch (e) {}
+    clearTimeout(stopT);
+    ctx.resume(); run();
+    const n = ctx.currentTime;
+    master.gain.cancelScheduledValues(n);
+    master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), n);
+    master.gain.exponentialRampToValueAtTime(1.6, n + 2.5);
+    on = true;
+    return true;
+  }
+  function pause() {
+    if (!ctx) return;
+    on = false;
+    const n = ctx.currentTime;
+    master.gain.cancelScheduledValues(n);
+    master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), n);
+    master.gain.exponentialRampToValueAtTime(0.0001, n + 0.8);
+    clearTimeout(stopT);
+    stopT = setTimeout(() => { if (!on) { halt(); ctx.suspend(); if (keep) keep.pause(); } }, 900);
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (!ctx || !on) return;
+    if (document.hidden) { halt(); ctx.suspend(); } else { ctx.resume(); run(); }
+  });
+  return { play, pause, isOn: () => on, voices, makeSchedule, E };
+})();
+const musicBtn = $("#musicBtn");
+const setMusicUi = playing => {
+  musicBtn.classList.toggle("playing", playing);
+  musicBtn.setAttribute("aria-pressed", String(playing));
+  musicBtn.setAttribute("aria-label", playing ? "Jeda musik" : "Putar musik");
+  musicBtn.title = playing ? "Jeda musik" : "Putar musik";
+};
+musicBtn.addEventListener("click", () => {
+  if (Music.isOn()) { Music.pause(); setMusicUi(false); }
+  else setMusicUi(Music.play());
+});
+
 // Open invitation
 $("#openBtn").addEventListener("click", () => {
+  setMusicUi(Music.play());
   $("#cover").classList.add("gone");
   document.body.classList.remove("locked");
   document.body.classList.add("opened");
@@ -440,7 +629,7 @@ ACARA.forEach(a => {
     const c = document.createElement("a");
     c.className = "btn"; c.target = "_blank"; c.rel = "noopener";
     c.href = "https://calendar.google.com/calendar/render?action=TEMPLATE"
-      + "&text=" + encodeURIComponent(a.nama + " Raja & Febry")
+      + "&text=" + encodeURIComponent(a.nama + " Raja & Febri")
       + "&dates=" + gcal(d) + "/" + gcal(end)
       + "&location=" + encodeURIComponent([a.tempat, a.alamat].filter(Boolean).join(", "));
     c.innerHTML = iconCal + "Simpan ke Kalender";
@@ -468,6 +657,10 @@ if (dates.length) {
   };
   tick(); setInterval(tick, 1000);
 }
+
+// Turut mengundang
+const turut = $("#turut");
+TURUT_MENGUNDANG.forEach(n => { const li = document.createElement("li"); li.textContent = n; turut.appendChild(li); });
 
 // Bank accounts
 const banks = $("#banks");
@@ -670,11 +863,11 @@ const iconWa = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 function showWa(w) {
   const box = $("#waBtns");
   box.textContent = "";
-  [["raja", "Raja"], ["febry", "Febry"]].forEach(([k, label]) => {
+  [["raja", "Raja"], ["febry", "Febri"]].forEach(([k, label]) => {
     const num = (WA[k] || "").replace(/\D/g, "");
     let el;
     if (num) {
-      const text = `Assalamu'alaikum ${label}, ini ${w.nama}.\n\n${w.ucapan}\n\nKonfirmasi kehadiran: ${w.hadir}\n\n(dikirim dari undangan digital Raja & Febry)`;
+      const text = `Assalamu'alaikum ${label}, ini ${w.nama}.\n\n${w.ucapan}\n\nKonfirmasi kehadiran: ${w.hadir}\n\n(dikirim dari undangan digital Raja & Febri)`;
       el = document.createElement("a");
       el.href = `https://wa.me/${num}?text=${encodeURIComponent(text)}`;
       el.target = "_blank"; el.rel = "noopener";
