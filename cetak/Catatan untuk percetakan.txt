@@ -1,0 +1,20 @@
+UNDANGAN RAJA & FEBRI, catatan untuk percetakan
+
+1. Model LENGKUNG (die-cut)
+   File  : Undangan Raja Febri - Lengkung (siap cetak).pdf
+   Ukuran jadi : 14 x 21 cm, bagian atas lengkung setengah lingkaran (jari-jari 7 cm)
+   Halaman 1 = depan, halaman 2 = belakang (cetak bolak-balik)
+   Halaman 3 = garis potong untuk pisau pon. Halaman 3 TIDAK dicetak.
+
+2. Model KOTAK
+   File  : Undangan Raja Febri - Kotak (siap cetak).pdf
+   Ukuran jadi : 14,8 x 21 cm (A5), potong lurus
+   Halaman 1 = depan, halaman 2 = belakang (cetak bolak-balik)
+
+Semua file sudah termasuk bleed 3 mm di setiap sisi (ukuran file = ukuran jadi + 6 mm).
+Teks sudah tertanam di PDF (tajam di ukuran berapa pun). PNG 300 dpi disertakan sebagai cadangan.
+
+Saran bahan:
+- Kertas art carton 260-310 gsm, laminasi doff (matte) dua sisi.
+- Model lengkung warna hijau tua: minta proof dulu supaya hijaunya tidak terlalu gelap.
+- Opsional: hot print / foil emas untuk nama "Raja & Febri" dan garis bingkai.
