@@ -2,6 +2,8 @@
   // Undangan statis: Cloudflare cukup menyajikan isi folder public/
   "name": "undangan-raja-febry",
   "compatibility_date": "2026-06-01",
+  // Aktifkan alamat publik undangan-raja-febry.<akun>.workers.dev
+  "workers_dev": true,
   "assets": {
     "directory": "./public"
   }
