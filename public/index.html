@@ -1162,7 +1162,7 @@ function renderWishes(docs) {
   });
   docs.forEach(d => seen.add(d.id));
   list.scrollTop = keepScroll;
-  $("#tally").textContent = docs.length ? `${docs.length} ucapan · ${yes} konfirmasi hadir (${people} orang) · ${no} berhalangan` : "Belum ada ucapan. Jadilah yang pertama.";
+  $("#tally").textContent = docs.length ? `${docs.length} ucapan · ${yes} konfirmasi hadir (total ${people} orang) · ${no} berhalangan` : "Belum ada ucapan. Jadilah yang pertama.";
 }
 let db = null;
 const send = $("#sendBtn");
