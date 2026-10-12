@@ -1,0 +1,8 @@
+{
+  // Undangan statis: Cloudflare cukup menyajikan isi folder public/
+  "name": "undangan-raja-febry",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./public"
+  }
+}

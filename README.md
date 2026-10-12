@@ -1,9 +1,9 @@
 # Undangan Raja & Febry
 
-Undangan pernikahan digital satu halaman. Dideploy otomatis oleh Netlify setiap ada perubahan di branch utama.
+Undangan pernikahan digital satu halaman. Dideploy otomatis oleh Cloudflare (wrangler.jsonc) setiap ada perubahan di branch utama.
 
-- `index.html` — seluruh halaman (desain, animasi, data acara, rekening, WA)
-- `couple.jpg`, `raja.jpg`, `febry.jpg` — foto
+- `public/index.html` — seluruh halaman (desain, animasi, data acara, rekening, WA)
+- `public/couple.jpg`, `public/raja.jpg`, `public/febry.jpg` — foto
 - Ucapan & RSVP disimpan di Supabase (project `undangan-raja-febry`, tabel `ucapan`)
 
 Link tamu: tambahkan nama di akhir alamat, misalnya `/#Budi_Santoso`.
