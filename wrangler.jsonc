@@ -2,8 +2,13 @@
   // Undangan statis: Cloudflare cukup menyajikan isi folder public/
   "name": "undangan-raja-febry",
   "compatibility_date": "2026-06-01",
-  // Aktifkan alamat publik undangan-raja-febry.<akun>.workers.dev
+  // Alamat cadangan undangan-raja-febry.<akun>.workers.dev tetap aktif
   "workers_dev": true,
+  // Domain utama
+  "routes": [
+    { "pattern": "undanganrajafebry.site", "custom_domain": true },
+    { "pattern": "www.undanganrajafebry.site", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./public"
   }
