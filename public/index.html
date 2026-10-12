@@ -67,11 +67,11 @@ p{margin:0;max-width:34ch}
 .cover h1{font-family:var(--script);font-weight:400;font-size:clamp(3.1rem,14.5vw,4.4rem);line-height:1;margin:6px 0 4px;color:var(--ivory)}
 .cover .amp{color:var(--gold)}
 .guest{margin:22px 0 18px;display:grid;gap:4px}
-.guest strong{font-size:1.5rem;font-weight:600;color:var(--ivory)}
+.guest strong{font-size:1.5rem;font-weight:600;color:var(--ivory);overflow-wrap:anywhere;max-width:100%}
 .guest small{font-family:var(--sans);font-size:.7rem;color:var(--muted)}
 
 /* Hero after opening */
-.hero{min-height:88svh;display:grid;align-content:center;gap:12px;padding-block:60px}
+.hero{min-height:88vh;min-height:88svh;display:grid;align-content:center;gap:12px;padding-block:60px}
 .hero h1{font-family:var(--script);font-weight:400;font-size:clamp(3.1rem,14.5vw,4.6rem);line-height:1;margin:0;color:var(--ivory)}
 .hero .date{font-family:var(--sans);letter-spacing:.2em;font-size:.8rem;color:var(--gold);text-transform:uppercase}
 .arch{width:min(300px,100%);aspect-ratio:3/4;border-radius:150px 150px 10px 10px;overflow:hidden;border:1px solid var(--gold);margin:8px auto;padding:6px}
@@ -104,7 +104,7 @@ p{margin:0;max-width:34ch}
 .gallery .wide{grid-column:1/-1;aspect-ratio:3/2}
 .gallery .tall{aspect-ratio:9/16}
 .lightbox{position:fixed;inset:0;z-index:40;background:rgba(10,14,12,.94);display:grid;place-items:center;padding:20px}
-.lightbox img{max-height:90svh;border-radius:6px}
+.lightbox img{max-height:90vh;max-height:90svh;border-radius:6px}
 
 /* Events */
 .count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
@@ -144,7 +144,7 @@ textarea{min-height:110px;resize:vertical}
 footer{text-align:center;font-family:var(--sans);font-size:.7rem;color:var(--muted);padding-block:40px 0}
 
 /* Bottom nav + music */
-.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:10;display:flex;gap:2px;background:rgba(34,48,41,.92);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:6px;max-width:calc(100% - 24px)}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:10;display:flex;gap:2px;background:rgba(34,48,41,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:6px;max-width:calc(100% - 24px)}
 .nav button{border:0;background:none;color:var(--muted);display:grid;justify-items:center;gap:2px;font-family:var(--sans);font-size:.6rem;letter-spacing:.06em;padding:6px 10px;border-radius:999px;cursor:pointer}
 .nav button.on{color:var(--night);background:var(--gold)}
 .nav svg{width:18px;height:18px}
@@ -232,6 +232,13 @@ input:focus,textarea:focus,select:focus{border-color:var(--gold);box-shadow:0 0 
 @keyframes twinkle{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.12) rotate(45deg)}}
 @keyframes fadeIn{to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.frame-svg path.ln{stroke-dashoffset:0}.frame-svg .spark{opacity:.9}.frame-svg .glint{display:none}}
+
+/* Keyboard open on phones: keep fixed controls from covering the field being typed in */
+body.typing .nav,body.typing .music{visibility:hidden;pointer-events:none}
+.nav,.music{transition:opacity .25s}
+html{scroll-padding-bottom:110px}
+.fullname,.wish,.wish b,.turut li,#ticketName{overflow-wrap:anywhere}
+.done-msg{font-family:var(--serif);font-size:1.15rem;color:var(--ivory)}
 
 /* ===== Animation ===== */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
@@ -544,9 +551,9 @@ try { raw = decodeURIComponent((location.hash || "").slice(1)); } catch (e) { ra
 let side = "";
 const sideTag = raw.match(/-(r|f)$/i);
 if (sideTag) { side = sideTag[1].toLowerCase() === "r" ? "raja" : "febry"; raw = raw.slice(0, -2); }
-raw = raw.replace(/[_~]+/g, " ").trim();
+raw = raw.replace(/[_~]+/g, " ").replace(/[<>{}\[\]"`\\]/g, "").replace(/\s+/g, " ").trim().slice(0, 60);
 const known = ["home","couple","event","gallery","wishes","gift","top"];
-if (raw && !known.includes(raw.toLowerCase())) {
+if (raw.length >= 2 && !known.includes(raw.toLowerCase())) {
   $("#guestName").textContent = raw;
   $("#guestName2").textContent = raw;
   $("#f-nama").value = raw.slice(0, 60);
@@ -796,7 +803,7 @@ $("#openBtn").addEventListener("click", () => {
   veil.animate([{ opacity: 0 }, { opacity: .75, offset: .45 }, { opacity: 0 }], { duration: 2200, easing: "ease-in-out" }).onfinish = () => veil.remove();
   cv.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 1100, delay: 750, easing: ease, fill: "forwards" }).onfinish = () => {
     cv.classList.add("gone");
-    cv.getAnimations({ subtree: true }).forEach(an => an.cancel());
+    if (cv.getAnimations) cv.getAnimations({ subtree: true }).forEach(an => an.cancel());
   };
   setTimeout(() => {
     showPage();
@@ -869,14 +876,26 @@ if (dates.length) {
     el.textContent = v;
     el.classList.remove("flip"); void el.offsetWidth; el.classList.add("flip");
   };
+  let cdTimer = null;
   const tick = () => {
+    const left = target - Date.now();
+    if (left <= 0) {
+      const c = $("#count");
+      const msg = left <= -12 * 3600 * 1000
+        ? "Alhamdulillah, acara telah berlangsung. Terima kasih atas doa dan restunya."
+        : "Hari ini hari bahagia kami. Sampai jumpa di lokasi!";
+      if (!c.querySelector(".done-msg") || c.textContent !== msg) c.innerHTML = '<p class="done-msg" style="grid-column:1/-1"></p>';
+      c.querySelector(".done-msg").textContent = msg;
+      if (left <= -12 * 3600 * 1000) clearInterval(cdTimer);
+      return;
+    }
     let s = Math.max(0, Math.floor((target - Date.now())/1000));
     setNum("#cd-d", Math.floor(s/86400)); s %= 86400;
     setNum("#cd-h", Math.floor(s/3600)); s %= 3600;
     setNum("#cd-m", Math.floor(s/60));
     setNum("#cd-s", s % 60);
   };
-  tick(); setInterval(tick, 1000);
+  cdTimer = setInterval(tick, 1000); tick();
 }
 
 // Turut mengundang
@@ -913,6 +932,11 @@ document.querySelectorAll(".gallery button").forEach(b => b.addEventListener("cl
   $("#lbImg").src = b.dataset.src; $("#lightbox").hidden = false;
 }));
 $("#lightbox").addEventListener("click", () => $("#lightbox").hidden = true);
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("#lightbox").hidden = true; });
+
+// While typing on a phone, hide the floating menu and music button so they never cover the field
+document.addEventListener("focusin", e => { if (e.target.matches("input, textarea, select")) document.body.classList.add("typing"); });
+document.addEventListener("focusout", () => setTimeout(() => { if (!document.activeElement || !document.activeElement.matches("input, textarea, select")) document.body.classList.remove("typing"); }, 50));
 
 // Bottom nav
 const navBtns = document.querySelectorAll(".nav button");
@@ -1006,7 +1030,7 @@ if (!reduceMotion && "IntersectionObserver" in window) {
       <path class="ln l1" pathLength="1" d="${arch(0)}"/>
       <path class="ln l2" id="${id}p" pathLength="1" d="${arch(9)}" transform="scale(-1,1) translate(-300,0)"/>
       <path class="spark" d="M150,-33 L152.2,-26.2 L159,-24 L152.2,-21.8 L150,-15 L147.8,-21.8 L141,-24 L147.8,-26.2 Z"/>
-      <circle class="glint" r="7" fill="url(#${id}g)"><animateMotion dur="11s" repeatCount="indefinite" begin="indefinite"><mpath href="#${id}p"/></animateMotion></circle>`;
+      <circle class="glint" r="7" fill="url(#${id}g)"><animateMotion dur="11s" repeatCount="indefinite" begin="indefinite"><mpath href="#${id}p" xlink:href="#${id}p"/></animateMotion></circle>`;
     wrap.appendChild(svg);
     frames.push(wrap);
   });
@@ -1226,7 +1250,7 @@ function showWa(w) {
       add: async w => {
         const r = await fetch(api, { method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(w) });
         if (!r.ok) throw new Error(r.status);
-        await load();
+        load();   // refresh the list in the background; don't make the guest wait
       }
     };
     load();
