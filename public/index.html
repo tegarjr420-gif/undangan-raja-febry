@@ -175,6 +175,29 @@ select:focus-visible{outline:2px solid var(--blush);outline-offset:3px}
 .veil{position:fixed;inset:0;z-index:21;pointer-events:none;opacity:0;will-change:opacity;background:radial-gradient(120% 80% at var(--vx,50%) var(--vy,80%),rgba(255,228,176,.95) 0%,rgba(230,190,120,.55) 35%,rgba(23,32,27,0) 75%)}
 .ring{position:fixed;z-index:23;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;pointer-events:none;border:2px solid rgba(236,211,160,.9);box-shadow:0 0 30px rgba(236,211,160,.6)}
 
+/* Section backgrounds: full-bleed bands behind the narrow column */
+.band{position:relative;isolation:isolate;padding-block:76px 64px}
+.band::before{content:"";position:absolute;inset:0 calc(50% - 50vw);z-index:-1;pointer-events:none}
+.band.orn::after{content:"";position:absolute;top:30px;left:50%;width:150px;height:38px;margin-left:-75px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 40'%3E%3Cg fill='none' stroke='%23d4ad6e' stroke-width='1.1' stroke-linecap='round'%3E%3Cpath d='M8 31 Q80 -2 152 31'/%3E%3Cpath d='M38 20 q-7 -10 -17 -9 q4 10 17 9z'/%3E%3Cpath d='M58 13 q-4 -11 -14 -13 q1 11 14 13z'/%3E%3Cpath d='M102 13 q4 -11 14 -13 q-1 11 -14 13z'/%3E%3Cpath d='M122 20 q7 -10 17 -9 q-4 10 -17 9z'/%3E%3Ccircle cx='80' cy='15.5' r='3'/%3E%3Ccircle cx='80' cy='15.5' r='6.5' stroke-opacity='.45'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;opacity:.7;pointer-events:none}
+.band.glow::before{background:radial-gradient(70% 45% at 50% 0%,rgba(212,173,110,.14),rgba(212,173,110,0) 70%),radial-gradient(60% 35% at 50% 100%,rgba(230,184,173,.08),rgba(230,184,173,0) 70%)}
+.band.tone::before{background:linear-gradient(180deg,rgba(34,48,41,0) 0%,rgba(34,48,41,.92) 14%,rgba(34,48,41,.92) 86%,rgba(34,48,41,0) 100%)}
+.band.photo::before{background:linear-gradient(180deg,var(--night) 0%,rgba(23,32,27,.72) 22%,rgba(23,32,27,.72) 78%,var(--night) 100%),url("bg-soft.jpg") center/cover no-repeat}
+.band.tone .event,.band.tone .count div{background:rgba(23,32,27,.55)}
+
+/* Micro-interactions: everything responds softly (transform/opacity/colour only) */
+.btn{transition:transform .3s cubic-bezier(.3,1.4,.5,1),background-color .3s,color .3s,box-shadow .3s,border-color .3s}
+@media (hover:hover){.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.28)} .event:hover{transform:translateY(-3px);border-color:rgba(212,173,110,.55);box-shadow:0 16px 34px rgba(0,0,0,.28)} .gallery button:hover{box-shadow:0 12px 28px rgba(0,0,0,.35)}}
+.btn:active,.chip:active,.choice label:active,.nav button:active{transform:scale(.95)}
+.chip,.choice label,.nav button{transition:transform .25s cubic-bezier(.3,1.4,.5,1),border-color .3s,color .3s,background-color .3s}
+input,textarea,select{transition:border-color .3s,box-shadow .3s,background-color .3s}
+input:focus,textarea:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,173,110,.18);background-color:#253428}
+.choice label:has(input:checked){border-color:var(--gold);background:rgba(212,173,110,.12)}
+.event{transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s,border-color .45s}
+.gallery button{transition:box-shadow .45s}
+.music{transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.music:active{transform:scale(.9)}
+.pre.from-s{transform:translateY(16px)}
+
 /* ===== Animation ===== */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.14) translate(-1.5%,-1%)}}
@@ -268,7 +291,7 @@ h2.pre::after{width:0}
   </section>
 
   <!-- SALAM + MEMPELAI -->
-  <section id="couple">
+  <section id="couple" class="band glow orn">
     <p class="eyebrow">Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
     <p>Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
 
@@ -292,7 +315,7 @@ h2.pre::after{width:0}
   </section>
 
   <!-- AYAT -->
-  <section>
+  <section class="band photo">
     <blockquote class="verse" style="margin:0">
       <p style="margin-inline:auto">“Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri supaya kamu dapat ketenangan hati dan dijadikannya kasih sayang di antara kamu. Sesungguhnya yang demikian menjadi tanda-tanda kebesaran-Nya bagi orang-orang yang berpikir.”</p>
       <br><cite>QS. AR-RUM : 21</cite>
@@ -300,7 +323,7 @@ h2.pre::after{width:0}
   </section>
 
   <!-- ACARA -->
-  <section id="event">
+  <section id="event" class="band tone orn">
     <span class="eyebrow">Save the Date</span>
     <h2>Resepsi Pernikahan</h2>
     <div class="count" id="count" hidden>
@@ -313,7 +336,7 @@ h2.pre::after{width:0}
   </section>
 
   <!-- GALERI -->
-  <section id="gallery">
+  <section id="gallery" class="band glow">
     <span class="eyebrow">Our Moment</span>
     <h2>Galeri</h2>
     <div class="gallery">
@@ -324,7 +347,7 @@ h2.pre::after{width:0}
   </section>
 
   <!-- UCAPAN & RSVP -->
-  <section id="wishes">
+  <section id="wishes" class="band tone orn">
     <span class="eyebrow">Doa &amp; Ucapan</span>
     <h2>Konfirmasi Kehadiran</h2>
     <p class="muted">Tinggalkan doa terbaik dan kabari kami apakah Anda bisa hadir.</p>
@@ -361,7 +384,7 @@ h2.pre::after{width:0}
   </section>
 
   <!-- HADIAH -->
-  <section id="gift">
+  <section id="gift" class="band glow orn">
     <span class="eyebrow">Wedding Gift</span>
     <h2>Tanda Kasih</h2>
     <p>Doa restu Anda adalah hadiah terindah bagi kami. Bila ingin memberi tanda kasih, informasinya ada di bawah ini.</p>
@@ -369,7 +392,7 @@ h2.pre::after{width:0}
   </section>
 
   <!-- PENUTUP -->
-  <section class="closing">
+  <section class="closing band photo">
     <p>Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila <b id="guestName2">Bapak/Ibu/Saudara/i</b> berkenan hadir dan memberikan doa restu.</p>
     <span class="eyebrow">Kami yang berbahagia</span>
     <h1><span class="shimmer">Raja &amp; Febri</span></h1>
@@ -885,7 +908,7 @@ function splitWords(root) {
   });
 }
 if (!reduceMotion && "IntersectionObserver" in window) {
-  const els = [...document.querySelectorAll("section:not(.hero)>*:not(#events):not(.gallery):not(#banks):not(#wishList), .event, .gallery button")];
+  const els = [...document.querySelectorAll("section:not(.hero)>*:not(#events):not(.gallery):not(#banks):not(#wishList):not(form):not(.count):not(.turut), .event, .gallery button, form > *, .count > div, .turut li, .event .actions .btn")];
   const persons = document.querySelectorAll(".person");
   const variant = new Map([[persons[0], "from-l"], [persons[1], "from-r"], [document.querySelector(".and"), "from-z"], [document.querySelector(".gallery .wide"), "from-z"]]);
   document.querySelectorAll(".gallery .tall").forEach((b, i) => variant.set(b, i ? "from-r" : "from-l"));
@@ -894,11 +917,12 @@ if (!reduceMotion && "IntersectionObserver" in window) {
     es.forEach(e => {
       if (!e.isIntersecting) return;
       const el = e.target;
-      el.style.setProperty("--d", (i++ * 0.12) + "s");
+      el.style.setProperty("--d", (Math.min(i++, 10) * 0.09) + "s");
       el.classList.remove("pre");
       el.classList.add("in");
       ro.unobserve(el);
-      setTimeout(() => el.style.removeProperty("--d"), 1600);
+      // hand the element back to its own hover/press transitions once it has arrived
+      setTimeout(() => { el.style.removeProperty("--d"); if (!el.classList.contains("txt-clip")) el.classList.remove("anim"); }, 2200);
     });
   }, { rootMargin: "0px 0px -10% 0px", threshold: 0.12 });
   els.forEach(el => {
@@ -913,6 +937,7 @@ if (!reduceMotion && "IntersectionObserver" in window) {
       el.classList.add("anim", "pre", "txt-clip");
     }
     else if (el.matches("p:not([id]), blockquote")) { splitWords(el); el.classList.add("split"); }
+    else if (el.matches(".turut li, .count > div, form > *, .actions .btn")) el.classList.add("anim", "pre", "from-s");
     else { el.classList.add("anim", "pre"); if (variant.has(el)) el.classList.add(variant.get(el)); }
     ro.observe(el);
   });
