@@ -4,7 +4,7 @@ Undangan pernikahan digital satu halaman. Dideploy otomatis oleh Cloudflare (wra
 
 - `public/index.html` — seluruh halaman (desain, animasi, data acara, rekening, WA)
 - `public/couple.jpg`, `public/raja.jpg`, `public/febry.jpg` — foto
-- Ucapan & RSVP disimpan di Supabase (project `undangan-raja-febry`, tabel `ucapan`)
+- Ucapan & RSVP: Google Sheets lewat Apps Script (google-sheets/Code.gs); Supabase sebagai cadangan bila SHEETS_URL kosong
 - Domain: https://undanganrajafebry.site (custom domain di wrangler.jsonc)
 
 Link tamu: tambahkan nama di akhir alamat, misalnya `/#Budi_Santoso`.

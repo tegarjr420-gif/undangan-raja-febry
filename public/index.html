@@ -482,6 +482,8 @@ const REKENING = [
   { bank: "BCA", nomor: "8881267608", atasNama: "Febri Yanti" }
 ];
 /* Database ucapan (Supabase). Kunci ini memang publik; tabelnya dikunci aturan: tamu hanya bisa membaca dan menambah. */
+/* Google Sheets (utama). Isi dengan link Web App dari Apps Script. Kalau kosong, undangan memakai Supabase. */
+const SHEETS_URL = "";
 const SUPABASE_URL = "https://jjkrkdyqkdhwmoathwbz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_M-c-ba8AfKp06mNyDStOag_wUqRu1MJ";
 const WA = { raja: "62881010021694", febry: "6289603200742" }; /* format: "6281234567890" (tanpa +, tanpa 0 di depan) */
@@ -1228,6 +1230,35 @@ function showWa(w) {
         return;
       }
     } catch (e) { /* fall through to Supabase */ }
+  }
+  if (SHEETS_URL) {
+    let sig = null;
+    const load = async () => {
+      try {
+        const r = await fetch(SHEETS_URL, { cache: "no-store" });
+        if (!r.ok) throw new Error(r.status);
+        const j = await r.json();
+        const rows = (j && j.data) || [];
+        const s = rows.map(x => x.id).join();
+        if (s === sig) return;
+        sig = s;
+        renderWishes(rows.map(x => ({ id: x.id, data: () => x })));
+      } catch (e) {
+        if (sig === null) $("#tally").textContent = "Ucapan belum bisa dimuat. Coba muat ulang halaman.";
+      }
+    };
+    db = {
+      add: async w => {
+        // text/plain keeps this a "simple" request, so Google accepts it without a CORS preflight
+        const r = await fetch(SHEETS_URL, { method: "POST", body: JSON.stringify(w) });
+        const j = await r.json().catch(() => ({ ok: r.ok }));
+        if (!r.ok || !j.ok) throw new Error((j && j.error) || r.status);
+        load();
+      }
+    };
+    load();
+    setInterval(() => { if (!document.hidden) load(); }, 30000);
+    return;
   }
   if (SUPABASE_URL && SUPABASE_KEY) {
     const api = SUPABASE_URL + "/rest/v1/ucapan";
