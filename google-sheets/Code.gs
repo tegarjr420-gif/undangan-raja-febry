@@ -31,9 +31,13 @@ function clean_(s, max) {
 
 // Undangan membaca daftar ucapan (terbaru di atas)
 function doGet() {
+  // Daftar disimpan sementara di cache Google, jadi tamu tidak perlu menunggu sheet dibaca ulang
+  const cache = CacheService.getScriptCache();
+  const hit = cache.get('list');
+  if (hit) return ContentService.createTextOutput(hit).setMimeType(ContentService.MimeType.JSON);
   const sh = sheet_();
   const last = sh.getLastRow();
-  if (last < 2) return json_({ ok: true, data: [] });
+  if (last < 2) return json_({ ok: true, data: [] });  // sheet kosong
   const start = Math.max(2, last - 499);
   const rows = sh.getRange(start, 1, last - start + 1, 5).getValues();
   const data = rows
@@ -50,7 +54,9 @@ function doGet() {
       };
     })
     .reverse();
-  return json_({ ok: true, data: data });
+  const out = JSON.stringify({ ok: true, data: data });
+  try { cache.put('list', out, 300); } catch (err) { /* daftar terlalu besar untuk cache, tetap dikirim */ }
+  return ContentService.createTextOutput(out).setMimeType(ContentService.MimeType.JSON);
 }
 
 // Undangan mengirim ucapan baru
@@ -65,10 +71,16 @@ function doPost(e) {
     const hadir = b.hadir === 'Tidak hadir' ? 'Tidak hadir' : 'Hadir';
     const jumlah = hadir === 'Hadir' ? Math.min(10, Math.max(1, parseInt(b.jumlah, 10) || 1)) : 0;
     sheet_().appendRow([new Date(), nama, hadir, jumlah, ucapan]);
+    CacheService.getScriptCache().remove('list');
     return json_({ ok: true });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   } finally {
     lock.releaseLock();
   }
+}
+
+// Kalau isi sheet diubah manual (misalnya menghapus baris), web langsung memakai data terbaru
+function onEdit() {
+  CacheService.getScriptCache().remove('list');
 }

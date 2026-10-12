@@ -17,6 +17,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317201b'/%3E%3Ctext x='32' y='45' font-size='40' text-anchor='middle' fill='%23d4ad6e' font-family='Georgia,serif' font-style='italic'%3E%26%3C/text%3E%3C/svg%3E">
 <title>Raja &amp; Febri</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@400;500&display=swap">
 <style>
 /* Layout: one narrow phone-width column, dusk-garden palette taken from the photos (forest sarong green, sunset gold, blush roses) */
@@ -1232,9 +1234,15 @@ function showWa(w) {
     } catch (e) { /* fall through to Supabase */ }
   }
   // Google Sheets first; if it cannot be reached, Supabase takes over so no wish is lost
+  // A stalled request must not hold the guest hostage: give up and move to the next store
+  const fetchT = (url, opt = {}, ms = 9000) => {
+    if (!window.AbortController) return fetch(url, opt);
+    const c = new AbortController(), t = setTimeout(() => c.abort(), ms);
+    return fetch(url, { ...opt, signal: c.signal }).finally(() => clearTimeout(t));
+  };
   const sheets = SHEETS_URL ? {
     list: async () => {
-      const r = await fetch(SHEETS_URL, { cache: "no-store" });
+      const r = await fetchT(SHEETS_URL, { cache: "no-store" }, 12000);
       if (!r.ok) throw new Error(r.status);
       const j = await r.json();
       if (!j || !j.ok) throw new Error("sheets");
@@ -1242,7 +1250,7 @@ function showWa(w) {
     },
     add: async w => {
       // text/plain keeps this a "simple" request, so Google accepts it without a CORS preflight
-      const r = await fetch(SHEETS_URL, { method: "POST", body: JSON.stringify(w) });
+      const r = await fetchT(SHEETS_URL, { method: "POST", body: JSON.stringify(w) }, 20000);
       const j = await r.json().catch(() => null);
       if (!r.ok || !j || !j.ok) throw new Error((j && j.error) || r.status);
     }
@@ -1252,42 +1260,102 @@ function showWa(w) {
     const headers = { apikey: SUPABASE_KEY, "Content-Type": "application/json" };
     return {
       list: async () => {
-        const r = await fetch(api + "?select=id,nama,ucapan,hadir,jumlah,waktu&order=waktu.desc&limit=300", { headers });
+        const r = await fetchT(api + "?select=id,nama,ucapan,hadir,jumlah,waktu&order=waktu.desc&limit=300", { headers });
         if (!r.ok) throw new Error(r.status);
         return r.json();
       },
       add: async w => {
-        const r = await fetch(api, { method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(w) });
+        const r = await fetchT(api, { method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(w) });
         if (!r.ok) throw new Error(r.status);
       }
     };
   })() : null;
   const stores = [sheets, supa].filter(Boolean);
   if (stores.length) {
-    let sig = null, active = 0;
-    const load = async () => {
-      for (let i = active; i < stores.length; i++) {
+    /* Google's script takes a few seconds to answer, so the guest never waits on it:
+       - the last list is kept on the phone and shown the moment the page opens, then refreshed quietly
+       - a new wish appears at once and goes to the outbox; it is sent in the background and retried
+         until the list from the server contains it, so nothing is lost on a weak signal */
+    const LS = {
+      get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+      set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } }
+    };
+    const K_LIST = "rf-ucapan-v1", K_OUT = "rf-outbox-v1";
+    const norm = s => String(s || "").replace(/\s+/g, " ").trim().replace(/^'/, "");
+    const same = (a, b) => norm(a.nama) === norm(b.nama) && norm(a.ucapan) === norm(b.ucapan);
+    let server = Array.isArray(LS.get(K_LIST)) ? LS.get(K_LIST) : null;
+    let outbox = (Array.isArray(LS.get(K_OUT)) ? LS.get(K_OUT) : []).filter(o => o && o.cid && Date.now() - o.t < 7 * 864e5);
+    let sig = null, loading = null, flushing = false;   // Sheets is always tried first, Supabase only when it fails
+
+    const paint = () => {
+      const mine = outbox.filter(o => !(server || []).some(r => same(r, o))).map(o => ({ ...o, id: "p-" + o.cid }));
+      const rows = [...mine, ...(server || [])];
+      const s2 = rows.map(x => x.id).join();
+      if (s2 === sig) return;
+      sig = s2;
+      renderWishes(rows.map(x => ({ id: x.id, data: () => x })));
+    };
+    const reconcile = (rows, fromSheets) => {
+      // A wish that reached the sheet keeps its place quietly instead of animating in a second time
+      outbox = outbox.filter(o => {
+        const hit = rows.find(r => same(r, o));
+        if (hit) { seen.add(hit.id); return false; }
+        return !(o.sent && Date.now() - o.t > 864e5);
+      });
+      server = rows;
+      if (fromSheets) LS.set(K_LIST, rows.slice(0, 300));   // the cache stays a copy of Sheets only
+      LS.set(K_OUT, outbox);
+      paint();
+    };
+    const load = () => loading || (loading = (async () => {
+      for (let i = 0; i < stores.length; i++) {
         try {
           const rows = await stores[i].list();
-          active = i;
-          const s2 = rows.map(x => x.id).join();
-          if (s2 !== sig) { sig = s2; renderWishes(rows.map(x => ({ id: x.id, data: () => x }))); }
-          return;
+          if (i === 0) { reconcile(rows, true); return true; }
+          // Sheets unreachable: show the backup's wishes together with the last list we got from Sheets
+          const last = Array.isArray(LS.get(K_LIST)) ? LS.get(K_LIST) : [];
+          reconcile([...rows, ...last.filter(r => !rows.some(x => same(x, r)))]
+            .sort((a, b) => String(b.waktu || "").localeCompare(String(a.waktu || ""))), false);
+          return true;
         } catch (e) { /* try the next store */ }
       }
-      if (sig === null) $("#tally").textContent = "Ucapan belum bisa dimuat. Coba muat ulang halaman.";
-    };
-    db = {
-      add: async w => {
-        let lastErr;
-        for (let i = active; i < stores.length; i++) {
-          try { await stores[i].add(w); active = i; load(); return; } catch (e) { lastErr = e; }
+      if (!server) $("#tally").textContent = "Ucapan belum bisa dimuat. Coba muat ulang halaman.";
+      return false;
+    })().finally(() => { loading = null; }));
+    const flush = async () => {
+      if (flushing || !outbox.some(o => !o.sent)) return;
+      flushing = true;
+      let sent = false;
+      try {
+        for (const o of outbox.filter(x => !x.sent)) {
+          const w = { nama: o.nama, ucapan: o.ucapan, hadir: o.hadir, jumlah: o.jumlah };
+          for (let i = 0; i < stores.length; i++) {
+            try { await stores[i].add(w); o.sent = true; sent = true; break; } catch (e) { /* next store */ }
+          }
+          LS.set(K_OUT, outbox);
+          if (!o.sent) break;   // offline: keep the rest for the next try
         }
-        throw lastErr || new Error("no store");
+      } finally { flushing = false; }
+      if (sent) load();
+    };
+    // Retries only after a fresh list, so a wish that did arrive is never sent twice
+    const sync = async () => { await load(); flush(); };
+
+    db = {
+      instant: true,
+      add: w => {
+        if (outbox.some(o => same(o, w) && Date.now() - o.t < 60000)) return;   // double tap
+        outbox.unshift({ ...w, cid: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), t: Date.now(), sent: false });
+        LS.set(K_OUT, outbox);
+        paint();
+        flush();
       }
     };
-    load();
-    setInterval(() => { if (!document.hidden) load(); }, 30000);
+    if (server || outbox.length) paint(); else $("#tally").textContent = "Memuat ucapan…";
+    sync();
+    setInterval(() => { if (!document.hidden) sync(); }, 20000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) sync(); });
+    window.addEventListener("online", sync);
     return;
   }
   $("#tally").textContent = "";
@@ -1299,7 +1367,14 @@ $("#rsvp").addEventListener("submit", async e => {
   const hadir = document.querySelector('input[name="hadir"]:checked').value;
   const jumlah = hadir === "Hadir" ? Math.min(10, Math.max(1, Number($("#f-jumlah").value) || 1)) : 1;
   const w = { nama, ucapan, hadir, jumlah };
-  if (db) {
+  if (db && db.instant) {
+    db.add(w);
+    ta.value = ""; chipBox.querySelectorAll(".chip.on").forEach(x => x.classList.remove("on"));
+    renderChips();
+    note.textContent = "Terima kasih! Ucapan Anda sudah tampil di bawah.";
+    list.scrollTop = 0;
+    send.disabled = true; setTimeout(() => { send.disabled = false; }, 1500);
+  } else if (db) {
     send.disabled = true; note.textContent = "Mengirim…";
     try {
       await db.add(w);
