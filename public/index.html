@@ -364,6 +364,8 @@ h2.pre::after{width:0}
 
 <script>
 /* ===== DATA UNDANGAN — isi bagian ini saat informasinya sudah ada ===== */
+/* Lagu latar: file di folder yang sama, mulai dari detik ke-"mulai" (98 = 1:38) */
+const LAGU = { src: "lagu.mp3", mulai: 98 };
 const MAPS = "https://maps.app.goo.gl/VHadyFS3yDngNn218?g_st=ac";
 const ACARA = [
   { nama: "Resepsi", tanggal: "2027-01-02T07:00:00+07:00", jam: "07.00 WIB – selesai",
@@ -583,6 +585,54 @@ const Music = (() => {
   });
   return { play, pause, isOn: () => on, voices, makeSchedule, E };
 })();
+// Lagu MP3 (utama). Kalau gagal dimuat, otomatis pindah ke musik buatan kode di atas.
+const Song = (() => {
+  let a = null, failed = !LAGU.src, fadeT = null, wantOn = false;
+  const fade = (to, ms, then) => {
+    clearInterval(fadeT);
+    const from = a.volume, t0 = performance.now();
+    fadeT = setInterval(() => {
+      const k = Math.min(1, (performance.now() - t0) / ms);
+      try { a.volume = from + (to - from) * k; } catch (e) {}
+      if (k >= 1) { clearInterval(fadeT); if (then) then(); }
+    }, 50);
+  };
+  function el(onFail) {
+    if (a) return a;
+    a = new Audio(LAGU.src + "#t=" + LAGU.mulai);
+    a.preload = "auto";
+    a.addEventListener("loadedmetadata", () => { if (a.currentTime < LAGU.mulai - 1) a.currentTime = LAGU.mulai; });
+    a.addEventListener("ended", () => { a.currentTime = LAGU.mulai; a.play().catch(() => {}); });
+    a.addEventListener("error", () => { failed = true; if (wantOn) onFail(); });
+    return a;
+  }
+  return {
+    usable: () => !failed,
+    play(onFail) {
+      if (failed) return false;
+      const e = el(onFail);
+      wantOn = true;
+      try { e.volume = 0; } catch (err) {}
+      const pr = e.play();
+      if (pr) pr.catch(() => { failed = true; if (wantOn) onFail(); });
+      fade(1, 2200);
+      return true;
+    },
+    pause() { wantOn = false; if (a) fade(0, 600, () => a.pause()); },
+    hide() { if (a && wantOn) a.pause(); },
+    show() { if (a && wantOn) a.play().catch(() => {}); }
+  };
+})();
+document.addEventListener("visibilitychange", () => document.hidden ? Song.hide() : Song.show());
+const Player = {
+  on: false,
+  play() {
+    const fallback = () => { setMusicUi(Music.play()); };
+    this.on = Song.play(fallback) || Music.play();
+    return this.on;
+  },
+  pause() { this.on = false; Song.pause(); Music.pause(); }
+};
 const musicBtn = $("#musicBtn");
 const setMusicUi = playing => {
   musicBtn.classList.toggle("playing", playing);
@@ -591,13 +641,13 @@ const setMusicUi = playing => {
   musicBtn.title = playing ? "Jeda musik" : "Putar musik";
 };
 musicBtn.addEventListener("click", () => {
-  if (Music.isOn()) { Music.pause(); setMusicUi(false); }
-  else setMusicUi(Music.play());
+  if (Player.on) { Player.pause(); setMusicUi(false); }
+  else setMusicUi(Player.play());
 });
 
 // Open invitation
 $("#openBtn").addEventListener("click", () => {
-  setMusicUi(Music.play());
+  setMusicUi(Player.play());
   $("#cover").classList.add("gone");
   document.body.classList.remove("locked");
   document.body.classList.add("opened");
