@@ -46,7 +46,7 @@ p{margin:0;max-width:34ch}
 .btn svg{width:16px;height:16px}
 
 /* Cover */
-.cover{position:fixed;inset:0;z-index:20;display:grid;align-content:end;justify-items:center;text-align:center;padding:0 20px calc(48px + env(safe-area-inset-bottom,0px));background:var(--night);overflow:hidden;transition:transform 1.1s cubic-bezier(.7,0,.2,1),opacity 1.1s}
+.cover{position:fixed;inset:0;z-index:20;display:grid;align-content:end;justify-items:center;text-align:center;padding:0 20px calc(48px + env(safe-area-inset-bottom,0px));background:var(--night);overflow:hidden;clip-path:circle(150% at var(--sx,50%) var(--sy,85%));transition:clip-path 1.25s cubic-bezier(.7,0,.25,1) .18s}
 .cover::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(23,32,27,.15) 0%,rgba(23,32,27,.35) 40%,rgba(23,32,27,.95) 78%)}
 .cover>*{position:relative}
 @media (max-width:600px){
@@ -54,7 +54,7 @@ p{margin:0;max-width:34ch}
   .cover>.cover-bg{inset:0 -1% auto;height:62%;background-position:36% 40%;animation-name:kbSoft}
   .cover::before{background:linear-gradient(180deg,rgba(23,32,27,.1) 0%,rgba(23,32,27,0) 30%,rgba(23,32,27,.85) 54%,var(--night) 62%)}
 }
-.cover.gone{transform:translateY(-100%);opacity:0;pointer-events:none}
+.cover.gone{clip-path:circle(0% at var(--sx,50%) var(--sy,85%));pointer-events:none}
 .cover h1{font-family:var(--script);font-weight:400;font-size:clamp(3.1rem,14.5vw,4.4rem);line-height:1;margin:6px 0 4px;color:var(--ivory)}
 .cover .amp{color:var(--gold)}
 .guest{margin:22px 0 18px;display:grid;gap:4px}
@@ -146,6 +146,30 @@ footer{text-align:center;font-family:var(--sans);font-size:.7rem;color:var(--mut
 .music:not(.playing) .ic-on{display:none}
 .music:not(.playing) .ic-off{display:block}
 .music:focus-visible{outline:2px solid var(--blush);outline-offset:3px}
+/* Wax seal open button */
+.seal{display:grid;justify-items:center;gap:12px;background:none;border:0;padding:0;cursor:pointer;color:var(--ivory);font-family:var(--sans);font-size:.74rem;letter-spacing:.24em;text-transform:uppercase}
+.seal-disc{position:relative;width:88px;height:88px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 34% 28%,#ecd3a0 0%,var(--gold) 42%,#9a7440 100%);box-shadow:inset 0 0 0 3px rgba(255,255,255,.14),inset 0 -8px 14px rgba(0,0,0,.28),0 10px 26px rgba(0,0,0,.4);transition:transform .35s cubic-bezier(.3,1.6,.5,1);animation:glow 2.6s 2.4s infinite}
+.seal-disc::before{content:"";position:absolute;inset:9px;border-radius:50%;border:1px dashed rgba(23,32,27,.45)}
+.seal-mono{position:relative;font-family:var(--script);font-size:2.3rem;color:var(--night);line-height:1;padding-top:.15em}
+.seal-mono i{font-style:normal;font-size:1.25rem;margin-inline:1px;opacity:.7}
+.seal:hover .seal-disc{transform:scale(1.05)}
+.seal.pressed .seal-disc{transform:scale(.88)}
+.seal:focus-visible .seal-disc{outline:2px solid var(--blush);outline-offset:5px}
+/* Map, hijri, ticket, share */
+.hijri{font-family:var(--sans);font-size:.78rem;letter-spacing:.12em;color:var(--gold)}
+.map{width:100%;aspect-ratio:4/3;max-width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--night)}
+.map iframe{width:100%;height:100%;border:0;display:block}
+.ticket{width:min(320px,100%);background:var(--ivory);color:var(--night);border-radius:18px;padding:22px 20px 18px;display:grid;justify-items:center;gap:8px;box-shadow:0 18px 40px rgba(0,0,0,.35);position:relative}
+.ticket::before,.ticket::after{content:"";position:absolute;top:62%;width:22px;height:22px;border-radius:50%;background:var(--night)}
+.ticket::before{left:-11px}.ticket::after{right:-11px}
+.ticket .t-eyebrow{font-family:var(--sans);font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:#7a5a2b}
+.ticket .t-name{font-family:var(--serif);font-size:1.35rem;font-weight:600;line-height:1.2;text-align:center}
+.ticket .t-meta{font-family:var(--sans);font-size:.72rem;color:#55625a;border-top:1px dashed #b9b3a6;padding-top:10px;width:100%;text-align:center}
+#qr{width:200px;height:200px;display:grid;place-items:center}
+#qr img,#qr canvas{width:200px!important;height:200px!important}
+select{width:100%;font:inherit;font-size:1rem;color:var(--ivory);background:var(--moss);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+select:focus-visible{outline:2px solid var(--blush);outline-offset:3px}
+
 /* ===== Animation ===== */
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.14) translate(-1.5%,-1%)}}
@@ -164,7 +188,7 @@ footer{text-align:center;font-family:var(--sans);font-size:.7rem;color:var(--mut
 .cover>:nth-child(2){animation:fadeUp 1s .2s both}
 .cover>:nth-child(3){animation:writeIn 1.9s .5s cubic-bezier(.6,.1,.2,1) both}
 .cover>:nth-child(4){animation:fadeUp 1s .9s both}
-.cover>:nth-child(5){animation:fadeUp 1s 1.3s both,glow 2.6s 2.4s infinite}
+.cover>:nth-child(5){animation:fadeUp 1s 1.3s both}
 
 .shimmer{background:linear-gradient(100deg,var(--ivory) 35%,var(--gold) 50%,var(--ivory) 65%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 7s linear infinite;padding-inline:.15em}
 
@@ -223,9 +247,9 @@ h2.pre::after{width:0}
     <strong id="guestName">Tamu Undangan</strong>
     <small>Mohon maaf apabila ada kesalahan penulisan nama atau gelar</small>
   </div>
-  <button class="btn solid" id="openBtn" type="button">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-    Buka Undangan
+  <button class="seal" id="openBtn" type="button" aria-label="Buka undangan">
+    <span class="seal-disc"><span class="seal-mono">R<i>&amp;</i>F</span></span>
+    <span>Buka Undangan</span>
   </button>
 </div>
 
@@ -283,6 +307,19 @@ h2.pre::after{width:0}
     <div id="events" style="display:grid;gap:14px;width:100%"></div>
   </section>
 
+  <!-- KARTU MASUK (hanya untuk link bernama) -->
+  <section id="tiket" hidden>
+    <span class="eyebrow">Kartu Masuk</span>
+    <h2>E-Invitation</h2>
+    <p class="muted">Tunjukkan kode ini kepada penerima tamu saat tiba di lokasi resepsi.</p>
+    <div class="ticket">
+      <span class="t-eyebrow">The Wedding of Raja &amp; Febri</span>
+      <div id="qr" role="img" aria-label="Kode QR kartu masuk"></div>
+      <span class="t-name" id="ticketName"></span>
+      <span class="t-meta">Resepsi · Sabtu, 2 Januari 2027 · 07.00 WIB<br>Kp. Peusar, Binong, Curug</span>
+    </div>
+  </section>
+
   <!-- GALERI -->
   <section id="gallery">
     <span class="eyebrow">Our Moment</span>
@@ -307,6 +344,12 @@ h2.pre::after{width:0}
           <label><input type="radio" name="hadir" id="f-hadir" value="Hadir" checked> Hadir</label>
           <label><input type="radio" name="hadir" id="f-tidak" value="Tidak hadir"> Tidak hadir</label>
         </div>
+      </div>
+      <div id="jumlahWrap">
+        <label for="f-jumlah">Jumlah yang hadir</label>
+        <select id="f-jumlah" style="margin-top:6px">
+          <option value="1">1 orang</option><option value="2" selected>2 orang</option><option value="3">3 orang</option><option value="4">4 orang</option><option value="5">5 orang</option>
+        </select>
       </div>
       <div>
         <label>Pilih ucapan cepat, atau tulis sendiri</label>
@@ -341,6 +384,11 @@ h2.pre::after{width:0}
     <p class="muted">Keluarga Bapak Muriyadi &amp; Ibu Nuraeni<br>Keluarga Bapak Marda &amp; Ibu Nurhati</p>
     <span class="eyebrow">Turut Mengundang</span>
     <ul class="turut" id="turut"></ul>
+    <button class="btn" type="button" id="shareBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
+      Bagikan Undangan
+    </button>
+    <p class="note" id="shareNote"></p>
     <p class="eyebrow">Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
   </section>
   <footer>Raja &amp; Febri · 2027</footer>
@@ -362,6 +410,7 @@ h2.pre::after{width:0}
 <canvas id="fx" aria-hidden="true"></canvas>
 <div class="lightbox" id="lightbox" hidden><img alt="Foto diperbesar" id="lbImg"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 /* ===== DATA UNDANGAN — isi bagian ini saat informasinya sudah ada ===== */
 /* Lagu latar: file di folder yang sama, mulai dari detik ke-"mulai" (0 = dari awal) */
@@ -369,7 +418,8 @@ const LAGU = { src: "lagu.mp3", mulai: 0 };
 const MAPS = "https://maps.app.goo.gl/VHadyFS3yDngNn218?g_st=ac";
 const ACARA = [
   { nama: "Resepsi", tanggal: "2027-01-02T07:00:00+07:00", jam: "07.00 WIB – selesai",
-    tempat: "Kp. Peusar RT 002 / RW 001", alamat: "Kel. Binong, Kec. Curug, Kab. Tangerang, Banten 15810", maps: MAPS }
+    tempat: "Kp. Peusar RT 002 / RW 001", alamat: "Kel. Binong, Kec. Curug, Kab. Tangerang, Banten 15810", maps: MAPS,
+    peta: "QH9P+P4Q Binong, Curug, Tangerang, Banten" }
 ];
 const REKENING = [
   { bank: "ShopeePay", nomor: "0881010021694", atasNama: "Muhamad Raja Ardiansyah" },
@@ -427,7 +477,9 @@ const TURUT_MENGUNDANG = [
   "Bung Bondan (Wakil Karang Taruna Unit 01 Kp. Peusar)",
   "Bung Permana / Iver (Sekjen Karang Taruna Unit 01)",
   "Bung Reno (Ketua Pemuda) serta jajarannya",
-  "Seluruh Pemuda Kp. Peusar"
+  "Seluruh Pemuda Kp. Peusar",
+  "Paguyuban Belimbing",
+  "Paguyuban Ponser"
 ];
 /* ===================================================================== */
 
@@ -448,6 +500,12 @@ const known = ["home","couple","event","gallery","wishes","gift","top"];
 if (raw && !known.includes(raw.toLowerCase())) {
   $("#guestName").textContent = raw;
   $("#guestName2").textContent = raw;
+  $("#tiket").hidden = false;
+  $("#ticketName").textContent = raw;
+  try {
+    if (window.QRCode) new QRCode($("#qr"), { text: "RAJAFEBRI|" + raw.slice(0, 60), width: 200, height: 200, colorDark: "#17201b", colorLight: "#f3ece0", correctLevel: QRCode.CorrectLevel.M });
+    else $("#tiket").hidden = true;
+  } catch (e) { $("#tiket").hidden = true; }
   $("#f-nama").value = raw.slice(0, 60);
 }
 
@@ -656,7 +714,11 @@ musicBtn.addEventListener("click", () => {
 // Open invitation
 $("#openBtn").addEventListener("click", () => {
   setMusicUi(Player.play());
-  $("#cover").classList.add("gone");
+  const btn = $("#openBtn"), r = btn.querySelector(".seal-disc").getBoundingClientRect(), cv = $("#cover");
+  cv.style.setProperty("--sx", (r.left + r.width / 2) + "px");
+  cv.style.setProperty("--sy", (r.top + r.height / 2) + "px");
+  btn.classList.add("pressed");
+  cv.classList.add("gone");
   document.body.classList.remove("locked");
   document.body.classList.add("opened");
   window.scrollTo(0, 0);
@@ -677,12 +739,24 @@ ACARA.forEach(a => {
   const card = document.createElement("div");
   card.className = "event";
   const d = a.tanggal ? new Date(a.tanggal) : null;
-  card.innerHTML = `<h3></h3><p class="fullname tgl"></p><p class="muted jam"></p><p class="tempat"></p><p class="muted alamat"></p><div class="actions"></div>`;
+  card.innerHTML = `<h3></h3><p class="fullname tgl"></p><p class="hijri"></p><p class="muted jam"></p><p class="tempat"></p><p class="muted alamat"></p><div class="actions"></div>`;
   card.querySelector("h3").textContent = a.nama;
   fill(card.querySelector(".tgl"), d ? fmt(d) : "", "Hari, tanggal menyusul");
   fill(card.querySelector(".jam"), a.jam, "Pukul … WIB");
   fill(card.querySelector(".tempat"), a.tempat, "Nama tempat");
   fill(card.querySelector(".alamat"), a.alamat, "Alamat lengkap lokasi");
+  const hj = card.querySelector(".hijri");
+  try { hj.textContent = d ? new Intl.DateTimeFormat("id-ID-u-ca-islamic-umalqura", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jakarta" }).format(d) : ""; } catch (e) { hj.textContent = ""; }
+  if (!hj.textContent) hj.remove();
+  if (a.peta) {
+    const m = document.createElement("div");
+    m.className = "map";
+    const f = document.createElement("iframe");
+    f.title = "Peta lokasi " + a.nama; f.loading = "lazy"; f.referrerPolicy = "no-referrer-when-downgrade";
+    f.src = "https://maps.google.com/maps?q=" + encodeURIComponent(a.peta) + "&z=16&output=embed";
+    m.appendChild(f);
+    card.insertBefore(m, card.querySelector(".actions"));
+  }
   const act = card.querySelector(".actions");
   if (a.maps) {
     const m = document.createElement("a");
@@ -879,10 +953,10 @@ const seen = new Set();
 function renderWishes(docs) {
   const keepScroll = list.scrollTop;
   list.textContent = "";
-  let yes = 0, no = 0;
+  let yes = 0, no = 0, people = 0;
   docs.forEach(d => {
     const w = d.data() || {};
-    if (w.hadir === "Hadir") yes++; else no++;
+    if (w.hadir === "Hadir") { yes++; people += Math.min(10, Math.max(1, Number(w.jumlah) || 1)); } else no++;
     const el = document.createElement("div");
     el.className = seen.size && !seen.has(d.id) ? "wish new" : "wish";
     el.innerHTML = `<b></b><span class="tag"></span><p></p>`;
@@ -893,7 +967,7 @@ function renderWishes(docs) {
   });
   docs.forEach(d => seen.add(d.id));
   list.scrollTop = keepScroll;
-  $("#tally").textContent = docs.length ? `${docs.length} ucapan · ${yes} hadir · ${no} tidak hadir` : "Belum ada ucapan. Jadilah yang pertama.";
+  $("#tally").textContent = docs.length ? `${docs.length} ucapan · ${yes} konfirmasi hadir (${people} orang) · ${no} berhalangan` : "Belum ada ucapan. Jadilah yang pertama.";
 }
 let db = null;
 const send = $("#sendBtn");
@@ -933,7 +1007,7 @@ function showWa(w) {
     const num = (WA[k] || "").replace(/\D/g, "");
     let el;
     if (num) {
-      const text = `Assalamu'alaikum ${label}, ini ${w.nama}.\n\n${w.ucapan}\n\nKonfirmasi kehadiran: ${w.hadir}\n\n(dikirim dari undangan digital Raja & Febri)`;
+      const text = `Assalamu'alaikum ${label}, ini ${w.nama}.\n\n${w.ucapan}\n\nKonfirmasi kehadiran: ${w.hadir}${w.hadir === "Hadir" ? ` (${w.jumlah} orang)` : ""}\n\n(dikirim dari undangan digital Raja & Febri)`;
       el = document.createElement("a");
       el.href = `https://wa.me/${num}?text=${encodeURIComponent(text)}`;
       el.target = "_blank"; el.rel = "noopener";
@@ -970,7 +1044,7 @@ function showWa(w) {
     let sig = null;
     const load = async () => {
       try {
-        const r = await fetch(api + "?select=id,nama,ucapan,hadir,waktu&order=waktu.desc&limit=300", { headers });
+        const r = await fetch(api + "?select=id,nama,ucapan,hadir,jumlah,waktu&order=waktu.desc&limit=300", { headers });
         if (!r.ok) throw new Error(r.status);
         const rows = await r.json();
         const s = rows.map(x => x.id).join();
@@ -999,7 +1073,8 @@ $("#rsvp").addEventListener("submit", async e => {
   const nama = $("#f-nama").value.trim(), ucapan = ta.value.trim();
   if (nama.length < 2 || ucapan.length < 2) { note.textContent = "Isi nama dan ucapan minimal 2 huruf."; return; }
   const hadir = document.querySelector('input[name="hadir"]:checked').value;
-  const w = { nama, ucapan, hadir };
+  const jumlah = hadir === "Hadir" ? Math.min(10, Math.max(1, Number($("#f-jumlah").value) || 1)) : 1;
+  const w = { nama, ucapan, hadir, jumlah };
   if (db) {
     send.disabled = true; note.textContent = "Mengirim…";
     try {
@@ -1013,6 +1088,26 @@ $("#rsvp").addEventListener("submit", async e => {
     note.textContent = "";
   }
   showWa(w);
+});
+
+// Jumlah tamu hanya untuk yang hadir
+const syncJumlah = () => { $("#jumlahWrap").hidden = statusHadir() !== "Hadir"; };
+document.querySelectorAll('input[name="hadir"]').forEach(r => r.addEventListener("change", syncJumlah));
+syncJumlah();
+
+// Bagikan undangan (tanpa nama tamu, supaya penerima bisa membuka untuk dirinya sendiri)
+$("#shareBtn").addEventListener("click", async () => {
+  const url = location.origin + location.pathname;
+  const data = { title: "Undangan Pernikahan Raja & Febri", text: "Undangan pernikahan Raja & Febri, Sabtu 2 Januari 2027.", url };
+  const sn = $("#shareNote");
+  try {
+    if (navigator.share) { await navigator.share(data); return; }
+    await navigator.clipboard.writeText(url);
+    sn.textContent = "Link undangan disalin.";
+  } catch (e) {
+    if (e && e.name === "AbortError") return;
+    sn.textContent = "Salin link ini: " + url;
+  }
 });
 </script>
 
