@@ -116,10 +116,13 @@ L_CSS = f"""
 .lb .salam{{font-size:6.2pt;letter-spacing:.2em;line-height:1.7;width:84mm;margin:2.2mm auto 0;color:{BLUSH}}}
 .lb p{{font-family:Corm;font-weight:500}}
 .lb .intro{{font-size:9.4pt;line-height:1.35;width:98mm;margin:2mm auto 0}}
-.pair{{display:grid;grid-template-columns:1fr 9mm 1fr;align-items:center;width:118mm;margin:3.2mm auto 0}}
+.pair{{display:grid;grid-template-columns:1fr 9mm 1fr;align-items:center;width:118mm;margin:2.6mm auto 0}}
 .pair .nm{{font-size:21pt;color:{GOLD}}}
 .pair .full{{font-family:Corm;font-weight:600;font-size:10.2pt;margin-top:.8mm}}
-.pair .par{{font-family:Corm;font-weight:500;font-size:8.2pt;line-height:1.3;color:{MUTED};margin-top:.6mm}}
+.pair .par{{font-family:Corm;font-weight:600;font-size:10.2pt;line-height:1.2;margin-top:.2mm}}
+.fpair{{grid-template-columns:1fr 7mm 1fr;width:120mm;margin:0 auto}}
+.fpair .full{{margin-top:0}}
+.fpair .and{{font-size:17pt}}
 .pair .and{{font-family:Pinyon;font-size:20pt;color:{GOLD};opacity:.8}}
 .rule{{display:flex;align-items:center;gap:2mm;width:56mm;margin:3.4mm auto 0;color:{GOLD}}}
 .rule::before,.rule::after{{content:"";flex:1;height:.2mm;background:currentColor;opacity:.6}}
@@ -150,12 +153,17 @@ L_CSS = f"""
 def lengkung():
     cx = PW / 2
     # ---------- front
-    wx, wy, ww, wh = cx - 36, B + 31, 72, 92
+    wx, wy, ww, wh = cx - 36, B + 31, 72, 74
     front = l_frame() + photo_window(wx, wy, ww, wh, GOLD, PW, PH) + seal(cx, wy + wh, 17, NIGHT) + f"""
 <div class="c eye" style="top:{B+18.5}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
 <div class="c script names" style="top:{wy+wh+12}mm">Raja<span class="amp">&amp;</span>Febri</div>
 <div class="c date" style="top:{wy+wh+30.5}mm">SABTU · 02 · 01 · 2027</div>
 <div class="c loc" style="top:{wy+wh+36}mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
+<div class="c" style="top:{wy+wh+44}mm"><div class="pair fpair">
+  <div><div class="full">Muhamad Raja Ardiansyah</div><div class="par">Putra kedua dari<br>Bapak Muriyadi &amp; Ibu Nuraeni</div></div>
+  <div class="and">&amp;</div>
+  <div><div class="full">Febri Yanti</div><div class="par">Putri keenam dari<br>Bapak Marda &amp; Ibu Nurhati</div></div>
+</div></div>
 <div class="c" style="top:{B+LH-42}mm">
   <div class="rule" style="margin-top:0;width:40mm"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
@@ -254,7 +262,7 @@ K_CSS = f"""
 .kf .namebox{{width:70mm;border-color:{KGOLD};box-shadow:0 0 0 .9mm rgba(169,132,74,.12)}}
 .kf .ditempat{{color:{SOFT}}}
 .kb .orn{{width:30mm;color:{KGOLD}}}
-.kb .pair{{margin-top:2.4mm}}
+.kb .pair{{margin-top:1.8mm}}
 .kb .rule{{margin-top:2.6mm}}
 .kb .ev .t{{margin-top:2mm}}
 .kb .tm{{margin-top:2.4mm}}
@@ -262,7 +270,7 @@ K_CSS = f"""
 .kb .salam{{font-size:6.3pt;letter-spacing:.2em;line-height:1.7;margin-top:2.4mm;color:{ROSE}}}
 .kb .intro{{font-size:9.6pt;line-height:1.35;width:104mm;margin:1.6mm auto 0}}
 .kb .pair .nm{{color:{KGOLD}}}
-.kb .pair .par{{color:{SOFT}}}
+.ivory .pair .full,.ivory .pair .par{{color:{INK}}}
 .kb .pair .and{{color:{KGOLD}}}
 .kb .rule{{color:{KGOLD}}}
 .verse{{font-family:Corm;font-style:italic;font-weight:500;font-size:8.6pt;line-height:1.34;width:112mm;margin:2.4mm auto 0;color:{SOFT}}}
@@ -278,12 +286,17 @@ K_CSS = f"""
 
 def kotak():
     cx = QW / 2
-    wx, wy, ww, wh = cx - 35, B + 30, 70, 90
+    wx, wy, ww, wh = cx - 35, B + 30, 70, 72
     front = k_frame() + corner_sprigs() + photo_window(wx, wy, ww, wh, KGOLD, QW, QH) + seal(cx, wy + wh, 17, "#17201b") + f"""
 <div class="c eye" style="top:{B+18}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
 <div class="c script names" style="top:{wy+wh+12}mm">Raja<span class="amp">&amp;</span>Febri</div>
 <div class="c date" style="top:{wy+wh+30.5}mm">SABTU · 02 · 01 · 2027</div>
 <div class="c loc" style="top:{wy+wh+36}mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
+<div class="c" style="top:{wy+wh+44}mm"><div class="pair fpair">
+  <div><div class="full">Muhamad Raja Ardiansyah</div><div class="par">Putra kedua dari<br>Bapak Muriyadi &amp; Ibu Nuraeni</div></div>
+  <div class="and">&amp;</div>
+  <div><div class="full">Febri Yanti</div><div class="par">Putri keenam dari<br>Bapak Marda &amp; Ibu Nurhati</div></div>
+</div></div>
 <div class="c" style="top:{B+KH-43}mm">
   <div class="rule" style="margin-top:0;width:40mm;color:{KGOLD}"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
