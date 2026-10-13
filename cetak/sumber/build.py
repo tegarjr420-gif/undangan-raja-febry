@@ -110,7 +110,7 @@ L_CSS = f"""
 .lf .date{{font-family:Jost;font-weight:500;font-size:8pt;letter-spacing:.42em;color:{GOLD};padding-left:.42em}}
 .lf .loc{{font-family:Corm;font-style:italic;font-weight:500;font-size:9.5pt;color:{MUTED}}}
 .kepada{{font-family:Jost;font-weight:500;font-size:6.3pt;letter-spacing:.22em;text-transform:uppercase;color:{BLUSH}}}
-.dots{{width:78mm;margin:4.2mm auto 0;border-bottom:.25mm dotted rgba(212,173,110,.75);height:0}}
+.namebox{{width:82mm;height:15mm;margin:2.6mm auto 0;background:#fff;border-radius:2mm;border:.35mm solid {GOLD};box-shadow:0 0 0 .9mm rgba(212,173,110,.18)}}
 .ditempat{{font-family:Corm;font-style:italic;font-size:9pt;color:{MUTED};margin-top:2.6mm}}
 .lb .orn{{width:34mm;color:{GOLD};opacity:.85}}
 .lb .salam{{font-size:6.2pt;letter-spacing:.2em;line-height:1.7;width:84mm;margin:2.2mm auto 0;color:{BLUSH}}}
@@ -156,10 +156,10 @@ def lengkung():
 <div class="c script names" style="top:{wy+wh+12}mm">Raja<span class="amp">&amp;</span>Febri</div>
 <div class="c date" style="top:{wy+wh+30.5}mm">SABTU · 02 · 01 · 2027</div>
 <div class="c loc" style="top:{wy+wh+36}mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
-<div class="c" style="top:{B+LH-38}mm">
+<div class="c" style="top:{B+LH-42}mm">
   <div class="rule" style="margin-top:0;width:40mm"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
-  <div class="dots"></div><div class="dots" style="width:62mm;margin-top:6mm"></div>
+  <div class="namebox"></div>
   <div class="ditempat">di Tempat</div>
 </div>"""
     # ---------- back
@@ -251,7 +251,7 @@ K_CSS = f"""
 .kf .date{{font-family:Jost;font-weight:500;font-size:8pt;letter-spacing:.42em;color:{KGOLD};padding-left:.42em}}
 .kf .loc{{font-family:Corm;font-style:italic;font-weight:500;font-size:9.5pt;color:{SOFT}}}
 .kf .kepada{{color:{ROSE}}}
-.kf .dots{{border-bottom-color:rgba(169,132,74,.8)}}
+.kf .namebox{{width:70mm;border-color:{KGOLD};box-shadow:0 0 0 .9mm rgba(169,132,74,.12)}}
 .kf .ditempat{{color:{SOFT}}}
 .kb .orn{{width:30mm;color:{KGOLD}}}
 .kb .pair{{margin-top:2.4mm}}
@@ -284,10 +284,10 @@ def kotak():
 <div class="c script names" style="top:{wy+wh+12}mm">Raja<span class="amp">&amp;</span>Febri</div>
 <div class="c date" style="top:{wy+wh+30.5}mm">SABTU · 02 · 01 · 2027</div>
 <div class="c loc" style="top:{wy+wh+36}mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
-<div class="c" style="top:{B+KH-39}mm">
+<div class="c" style="top:{B+KH-43}mm">
   <div class="rule" style="margin-top:0;width:40mm;color:{KGOLD}"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
-  <div class="dots"></div><div class="dots" style="width:62mm;margin-top:6mm"></div>
+  <div class="namebox"></div>
   <div class="ditempat">di Tempat</div>
 </div>"""
     back = k_frame() + f"""
