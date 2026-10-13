@@ -169,7 +169,7 @@ def lengkung():
 <div class="c eye" style="top:{B+18.5}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
 <div class="c" style="top:{wy+wh+10.5}mm">
  <div class="duo">
-  <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi<br>&amp; Ibu Nuraeni</div>
+  <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div>
        <div class="script big">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
   <div class="script amp2">&amp;</div>
   <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div>
@@ -191,7 +191,7 @@ def lengkung():
   <div class="eye salam">Assalamu'alaikum Warahmatullahi Wabarakatuh</div>
   <p class="intro">Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
   <div class="pair">
-    <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi<br>&amp; Ibu Nuraeni</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
+    <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
     <div class="and">&amp;</div>
     <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div><div class="script nm">Febri</div><div class="full">Febri Yanti</div></div>
   </div>
@@ -307,7 +307,7 @@ def kotak():
 <div class="c eye" style="top:{B+18}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
 <div class="c" style="top:{wy+wh+10.5}mm">
  <div class="duo">
-  <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi<br>&amp; Ibu Nuraeni</div>
+  <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div>
        <div class="script big">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
   <div class="script amp2">&amp;</div>
   <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div>
@@ -328,7 +328,7 @@ def kotak():
   <div class="eye salam">Assalamu'alaikum Warahmatullahi Wabarakatuh</div>
   <p class="intro">Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
   <div class="pair">
-    <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi<br>&amp; Ibu Nuraeni</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
+    <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
     <div class="and">&amp;</div>
     <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div><div class="script nm">Febri</div><div class="full">Febri Yanti</div></div>
   </div>
