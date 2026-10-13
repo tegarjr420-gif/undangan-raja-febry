@@ -74,6 +74,27 @@ p{margin:0;max-width:34ch}
 .ortu-cover .oc-name{font-weight:600;font-size:1.12rem;color:var(--ivory);text-shadow:0 1px 10px rgba(0,0,0,.55)}
 .ortu-cover .oc-lbl{font-family:var(--sans);font-size:.76rem;letter-spacing:.04em;color:#e3dccf;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 .ortu-cover .oc-par{font-weight:600;font-size:clamp(1.2rem,5.4vw,1.42rem);line-height:1.3;color:#ecd09a;text-wrap:balance;text-shadow:0 1px 12px rgba(0,0,0,.65)}
+/* A slow gold glint across the parents' names (same light as the couple's names) */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .ortu-cover .oc-par{background:linear-gradient(100deg,#ecd09a 38%,#fff4da 50%,#ecd09a 62%) 0 0/260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 1px 6px rgba(0,0,0,.55));animation:shine 9s linear 2.6s infinite}
+}
+/* Card details arrive line by line once their card is in view */
+.event>p,.person>p,.person>.ortu-lbl{transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.event.pre>p,.person.pre>p,.person.pre>.ortu-lbl{opacity:0;transform:translateY(12px)}
+.event>p:nth-of-type(1),.person>.ortu-lbl{transition-delay:.35s}
+.event>p:nth-of-type(2),.person>p:nth-of-type(1){transition-delay:.45s}
+.event>p:nth-of-type(3){transition-delay:.55s}
+.event>p:nth-of-type(4),.person>p:nth-of-type(2){transition-delay:.65s}
+.event>p:nth-of-type(5){transition-delay:.75s}
+.event>p:nth-of-type(6),.person>p:nth-of-type(3){transition-delay:.85s}
+.event>p:nth-of-type(7){transition-delay:.95s}
+/* The venue name settles in from wide letter spacing */
+.event>p.rumah{transition:opacity 1s ease .7s,transform 1s cubic-bezier(.2,.7,.2,1) .7s,letter-spacing 1.6s cubic-bezier(.2,.7,.2,1) .7s}
+.event.pre>p.rumah{letter-spacing:.16em}
+.event>p.rumah{white-space:nowrap}
+/* A short gold rule draws itself under each full name */
+.person .fullname::after{content:"";display:block;width:46px;height:1px;margin:9px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform-origin:center;transition:transform 1.3s cubic-bezier(.6,.1,.2,1) .9s}
+.person.pre .fullname::after{transform:scaleX(0)}
 .guest strong{font-size:1.5rem;font-weight:600;color:var(--ivory);overflow-wrap:anywhere;max-width:100%}
 .guest small{font-family:var(--sans);font-size:.7rem;color:var(--muted)}
 
