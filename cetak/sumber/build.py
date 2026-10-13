@@ -116,8 +116,19 @@ L_CSS = f"""
 .lb .salam{{font-size:6.2pt;letter-spacing:.2em;line-height:1.7;width:84mm;margin:2.2mm auto 0;color:{BLUSH}}}
 .lb p{{font-family:Corm;font-weight:500}}
 .lb .intro{{font-size:9.4pt;line-height:1.35;width:98mm;margin:2mm auto 0}}
+.duo{{display:grid;grid-template-columns:1fr 8mm 1fr;align-items:end;width:124mm;margin:0 auto}}
+.lbl{{font-size:5.8pt;letter-spacing:.24em;padding-left:.24em}}
+.duo .ortu{{font-size:17pt;line-height:1.08;margin-top:1.4mm}}
+.duo .big{{font-size:36pt;line-height:1;margin-top:1.8mm}}
+.duo .full{{font-family:Corm;font-weight:600;font-size:10pt;margin-top:.8mm}}
+.duo .amp2{{font-size:26pt;color:{GOLD};padding-bottom:7mm}}
+.dark .duo .ortu,.dark .duo .big,.dark .duo .full{{color:{IVORY}}}
+.pair .ortu{{font-size:13.5pt;line-height:1.05;color:{GOLD};margin-top:.8mm}}
+.pair .lbl{{margin-top:0}}
+.pair .nm{{margin-top:.8mm}}
+.pair{{align-items:end}}
 .pair{{display:grid;grid-template-columns:1fr 9mm 1fr;align-items:center;width:118mm;margin:2.6mm auto 0}}
-.pair .nm{{font-size:21pt;color:{GOLD}}}
+.pair .nm{{font-size:19pt;color:{GOLD}}}
 .pair .full{{font-family:Corm;font-weight:600;font-size:10.2pt;margin-top:.8mm}}
 .pair .par{{font-family:Corm;font-weight:600;font-size:10.2pt;line-height:1.2;margin-top:.2mm}}
 .fpair{{grid-template-columns:1fr 7mm 1fr;width:120mm;margin:0 auto}}
@@ -156,14 +167,17 @@ def lengkung():
     wx, wy, ww, wh = cx - 36, B + 31, 72, 74
     front = l_frame() + photo_window(wx, wy, ww, wh, GOLD, PW, PH) + seal(cx, wy + wh, 17, NIGHT) + f"""
 <div class="c eye" style="top:{B+18.5}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
-<div class="c script names" style="top:{wy+wh+12}mm">Raja<span class="amp">&amp;</span>Febri</div>
-<div class="c date" style="top:{wy+wh+30.5}mm">SABTU · 02 · 01 · 2027</div>
-<div class="c loc" style="top:{wy+wh+36}mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
-<div class="c" style="top:{wy+wh+44}mm"><div class="pair fpair">
-  <div><div class="full">Muhamad Raja Ardiansyah</div><div class="par">Putra kedua dari<br>Bapak Muriyadi &amp; Ibu Nuraeni</div></div>
-  <div class="and">&amp;</div>
-  <div><div class="full">Febri Yanti</div><div class="par">Putri keenam dari<br>Bapak Marda &amp; Ibu Nurhati</div></div>
-</div></div>
+<div class="c" style="top:{wy+wh+10.5}mm">
+ <div class="duo">
+  <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi<br>&amp; Ibu Nuraeni</div>
+       <div class="script big">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
+  <div class="script amp2">&amp;</div>
+  <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div>
+       <div class="script big">Febri</div><div class="full">Febri Yanti</div></div>
+ </div>
+ <div class="date" style="margin-top:3.6mm">SABTU · 02 · 01 · 2027</div>
+ <div class="loc" style="margin-top:1.4mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
+</div>
 <div class="c" style="top:{B+LH-42}mm">
   <div class="rule" style="margin-top:0;width:40mm"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
@@ -172,14 +186,14 @@ def lengkung():
 </div>"""
     # ---------- back
     back = l_frame() + f"""
-<div class="c" style="top:{B+20}mm">
+<div class="c" style="top:{B+16}mm">
   {ORN}
   <div class="eye salam">Assalamu'alaikum Warahmatullahi Wabarakatuh</div>
   <p class="intro">Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
   <div class="pair">
-    <div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div><div class="par">Putra kedua dari<br>Bapak Muriyadi &amp; Ibu Nuraeni</div></div>
+    <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi<br>&amp; Ibu Nuraeni</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
     <div class="and">&amp;</div>
-    <div><div class="script nm">Febri</div><div class="full">Febri Yanti</div><div class="par">Putri keenam dari<br>Bapak Marda &amp; Ibu Nurhati</div></div>
+    <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div><div class="script nm">Febri</div><div class="full">Febri Yanti</div></div>
   </div>
   <div class="rule"><b></b></div>
   <div class="ev">
@@ -262,26 +276,28 @@ K_CSS = f"""
 .kf .namebox{{width:70mm;border-color:{KGOLD};box-shadow:0 0 0 .9mm rgba(169,132,74,.12)}}
 .kf .ditempat{{color:{SOFT}}}
 .kb .orn{{width:30mm;color:{KGOLD}}}
-.kb .pair{{margin-top:1.8mm}}
-.kb .rule{{margin-top:2.6mm}}
+.kb .pair{{margin-top:1.2mm}}
+.kb .rule{{margin-top:2.2mm}}
 .kb .ev .t{{margin-top:2mm}}
 .kb .tm{{margin-top:2.4mm}}
 .kb p{{font-family:Corm;font-weight:500}}
 .kb .salam{{font-size:6.3pt;letter-spacing:.2em;line-height:1.7;margin-top:2.4mm;color:{ROSE}}}
 .kb .intro{{font-size:9.6pt;line-height:1.35;width:104mm;margin:1.6mm auto 0}}
-.kb .pair .nm{{color:{KGOLD}}}
+.kb .pair .nm,.kb .pair .ortu{{color:{KGOLD}}}
+.ivory .duo .ortu,.ivory .duo .big,.ivory .duo .full{{color:{INK}}}
+.ivory .duo .amp2{{color:{KGOLD}}}
 .ivory .pair .full,.ivory .pair .par{{color:{INK}}}
 .kb .pair .and{{color:{KGOLD}}}
 .kb .rule{{color:{KGOLD}}}
-.verse{{font-family:Corm;font-style:italic;font-weight:500;font-size:8.6pt;line-height:1.34;width:112mm;margin:2.4mm auto 0;color:{SOFT}}}
+.verse{{font-family:Corm;font-style:italic;font-weight:500;font-size:8.6pt;line-height:1.34;width:112mm;margin:1.8mm auto 0;color:{SOFT}}}
 .verse cite{{display:block;font-style:normal;font-family:Jost;font-weight:500;font-size:6pt;letter-spacing:.24em;color:{KGOLD};margin-top:1mm}}
 .kb .ev .hj{{color:{KGOLD}}}
 .kb .ev .addr{{color:{SOFT}}}
 .kb .qr{{background:transparent;border:.25mm solid rgba(169,132,74,.7)}}
 .kb .web .tx b{{color:{KGOLD}}}
-.kb .close{{font-size:9pt;line-height:1.35;width:112mm;margin:2.8mm auto 0;font-style:italic}}
+.kb .close{{font-size:9pt;line-height:1.35;width:112mm;margin:2.2mm auto 0;font-style:italic}}
 .kb .turut li::before{{color:{KGOLD}}}
-.kb .turut{{width:124mm;font-size:7.3pt;line-height:1.12}}
+.kb .turut{{width:124mm;font-size:7.3pt;line-height:1.09}}
 """
 
 def kotak():
@@ -289,14 +305,17 @@ def kotak():
     wx, wy, ww, wh = cx - 35, B + 30, 70, 72
     front = k_frame() + corner_sprigs() + photo_window(wx, wy, ww, wh, KGOLD, QW, QH) + seal(cx, wy + wh, 17, "#17201b") + f"""
 <div class="c eye" style="top:{B+18}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
-<div class="c script names" style="top:{wy+wh+12}mm">Raja<span class="amp">&amp;</span>Febri</div>
-<div class="c date" style="top:{wy+wh+30.5}mm">SABTU · 02 · 01 · 2027</div>
-<div class="c loc" style="top:{wy+wh+36}mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
-<div class="c" style="top:{wy+wh+44}mm"><div class="pair fpair">
-  <div><div class="full">Muhamad Raja Ardiansyah</div><div class="par">Putra kedua dari<br>Bapak Muriyadi &amp; Ibu Nuraeni</div></div>
-  <div class="and">&amp;</div>
-  <div><div class="full">Febri Yanti</div><div class="par">Putri keenam dari<br>Bapak Marda &amp; Ibu Nurhati</div></div>
-</div></div>
+<div class="c" style="top:{wy+wh+10.5}mm">
+ <div class="duo">
+  <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi<br>&amp; Ibu Nuraeni</div>
+       <div class="script big">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
+  <div class="script amp2">&amp;</div>
+  <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div>
+       <div class="script big">Febri</div><div class="full">Febri Yanti</div></div>
+ </div>
+ <div class="date" style="margin-top:3.6mm">SABTU · 02 · 01 · 2027</div>
+ <div class="loc" style="margin-top:1.4mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
+</div>
 <div class="c" style="top:{B+KH-43}mm">
   <div class="rule" style="margin-top:0;width:40mm;color:{KGOLD}"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
@@ -304,14 +323,14 @@ def kotak():
   <div class="ditempat">di Tempat</div>
 </div>"""
     back = k_frame() + f"""
-<div class="c" style="top:{B+10.5}mm">
+<div class="c" style="top:{B+9.8}mm">
   {ORN}
   <div class="eye salam">Assalamu'alaikum Warahmatullahi Wabarakatuh</div>
   <p class="intro">Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
   <div class="pair">
-    <div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div><div class="par">Putra kedua dari<br>Bapak Muriyadi &amp; Ibu Nuraeni</div></div>
+    <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi<br>&amp; Ibu Nuraeni</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
     <div class="and">&amp;</div>
-    <div><div class="script nm">Febri</div><div class="full">Febri Yanti</div><div class="par">Putri keenam dari<br>Bapak Marda &amp; Ibu Nurhati</div></div>
+    <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div><div class="script nm">Febri</div><div class="full">Febri Yanti</div></div>
   </div>
   <p class="verse">“Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri supaya kamu dapat ketenangan hati dan dijadikannya kasih sayang di antara kamu.”<cite>QS. AR-RUM : 21</cite></p>
   <div class="rule"><b></b></div>
