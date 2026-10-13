@@ -83,6 +83,9 @@ p{margin:0;max-width:34ch}
 .person{display:grid;gap:10px;justify-items:center}
 .person .name{font-family:var(--script);font-size:2.6rem;line-height:1.1;color:var(--ivory)}
 .person .arch{width:min(240px,100%)}
+.person .ortu-lbl{margin-top:6px}
+.person .ortu{font-family:var(--script);font-size:clamp(1.5rem,7vw,1.75rem);line-height:1.2;color:var(--ivory);margin:-4px 0 0;max-width:none;text-wrap:balance}
+.person .ortu+.name{margin-top:-2px}
 .and{font-family:var(--script);font-size:3.4rem;color:var(--gold);line-height:1}
 .ig{font-family:var(--sans);font-size:.8rem;color:var(--muted)}
 .ig a{color:var(--gold);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .3s}
@@ -343,9 +346,10 @@ h2.pre::after{width:0}
 
     <div class="person">
       <div class="arch"><img src="raja.jpg" alt="Raja" style="object-position:center 42%"></div>
+      <span class="eyebrow ortu-lbl">Putra kedua dari</span>
+      <p class="ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</p>
       <div class="name">Raja</div>
       <p class="fullname">Muhamad Raja Ardiansyah</p>
-      <p class="muted">Putra kedua dari<br>Bapak Muriyadi &amp; Ibu Nuraeni</p>
       <p class="ig"><a href="https://www.instagram.com/rajaaa.ard/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>@rajaaa.ard</a></p>
     </div>
 
@@ -353,9 +357,10 @@ h2.pre::after{width:0}
 
     <div class="person">
       <div class="arch"><img src="febry.jpg" alt="Febri" style="object-position:center 35%"></div>
+      <span class="eyebrow ortu-lbl">Putri keenam dari</span>
+      <p class="ortu">Bapak Marda<br>&amp; Ibu Nurhati</p>
       <div class="name">Febri</div>
       <p class="fullname">Febri Yanti</p>
-      <p class="muted">Putri keenam dari<br>Bapak Marda &amp; Ibu Nurhati</p>
       <p class="ig"><a href="https://www.instagram.com/fbr_iyntii/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>@fbr_iyntii</a></p>
     </div>
   </section>
