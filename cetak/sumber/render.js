@@ -5,13 +5,13 @@ const path = require('path');
 const MM = 96 / 25.4;
 const B = 3;
 const jobs = [
-  { name: 'lengkung', w: 146, h: 216, arch: true, safe: 6.6 + 1.5, sides: ['depan', 'belakang', 'garis-potong'] },
-  { name: 'kotak', w: 154, h: 216, arch: false, safe: 8 + 2, sides: ['depan', 'belakang'] },
+  { name: 'lengkung', w: 156, h: 231, arch: true, safe: 6.6 + 1.5, sides: ['depan', 'belakang', 'garis-potong'] },
+  { name: 'kotak', w: 156, h: 231, arch: false, safe: 8 + 2, sides: ['depan', 'belakang'] },
 ];
 (async () => {
   const b = await chromium.launch();
   for (const j of jobs) {
-    const p = await b.newPage({ viewport: { width: Math.ceil(j.w * MM), height: Math.ceil(j.h * MM) }, deviceScaleFactor: 300 / 96 });
+    const p = await b.newPage({ viewport: { width: Math.ceil(j.w * MM), height: Math.ceil(j.h * MM) }, deviceScaleFactor: 600 / 96 });
     await p.goto('file://' + path.join(__dirname, j.name + '.html'));
     await p.evaluate(() => document.fonts.ready);
     await p.waitForTimeout(300);

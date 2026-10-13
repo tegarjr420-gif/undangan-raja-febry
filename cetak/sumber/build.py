@@ -25,7 +25,7 @@ FONTS = """
 ORN = """<svg class="orn" viewBox="0 0 160 40"><g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
 <path d="M8 31 Q80 -2 152 31"/><path d="M38 20 q-7 -10 -17 -9 q4 10 17 9z"/><path d="M58 13 q-4 -11 -14 -13 q1 11 14 13z"/>
 <path d="M102 13 q4 -11 14 -13 q-1 11 -14 13z"/><path d="M122 20 q7 -10 17 -9 q-4 10 -17 9z"/>
-<circle cx="80" cy="15.5" r="3"/><circle cx="80" cy="15.5" r="6.5" stroke-opacity=".45"/></g></svg>"""
+<circle cx="80" cy="15.5" r="3"/><circle cx="80" cy="15.5" r="6.5" stroke-width=".7"/></g></svg>"""
 
 def star(cx, cy, r):
     k = r * 0.32
@@ -39,11 +39,11 @@ def arch_path(x0, y0, w, h, inset=0.0):
     return (f"M{x0:.2f},{y0+h:.2f} L{x0:.2f},{y0+r:.2f} A{r:.2f},{r:.2f} 0 0 1 {x0+w:.2f},{y0+r:.2f} "
             f"L{x0+w:.2f},{y0+h:.2f} Z")
 
-def photo_window(x, y, w, h, gold, vw, vh, offs=(2.4, 4.0), spark=True):
+def photo_window(x, y, w, h, gold, vw, vh, gold2, offs=(2.4, 4.0), spark=True):
     """Photo in an arch window with the double gilded outline used online."""
     lines = "".join(
-        f'<path d="{arch_path(x-o, y-o, w+2*o, h+2*o)}" fill="none" stroke="{gold}" '
-        f'stroke-width="{0.32 if i == 0 else 0.2}" stroke-opacity="{1 if i == 0 else .55}"/>'
+        f'<path d="{arch_path(x-o, y-o, w+2*o, h+2*o)}" fill="none" stroke="{gold if i == 0 else gold2}" '
+        f'stroke-width="{0.32 if i == 0 else 0.22}"/>'
         for i, o in enumerate(offs))
     sp = f'<path d="{star(x + w/2, y - offs[1] - 3.2, 2.2)}" fill="{gold}"/>' if spark else ""
     return f"""
@@ -70,12 +70,10 @@ body{{-webkit-print-color-adjust:exact;print-color-adjust:exact;text-rendering:g
 .pg{{position:relative;overflow:hidden;break-after:page}}
 .ov{{position:absolute;inset:0;width:100%;height:100%;overflow:visible}}
 .photo{{position:absolute;background:url(couple.jpg) 56% 62%/auto 100% no-repeat;background-size:cover}}
-.seal{{position:absolute;border-radius:50%;display:grid;place-items:center;
-  background:radial-gradient(circle at 34% 28%,#efd8a6 0%,#d4ad6e 45%,#97713f 100%);
-  box-shadow:0 0 0 .5mm rgba(255,255,255,.12) inset,0 1.2mm 2.4mm rgba(0,0,0,.35)}}
-.seal::before{{content:"";position:absolute;inset:1.6mm;border-radius:50%;border:.18mm dashed rgba(23,32,27,.5)}}
+.seal{{position:absolute;border-radius:50%;display:grid;place-items:center;background:#d4ad6e;border:.45mm solid #b48c52}}
+.seal::before{{content:"";position:absolute;inset:1.6mm;border-radius:50%;border:.2mm dashed #6f5a36}}
 .seal span{{font-family:Pinyon;font-size:17pt;line-height:1;padding-top:1.2mm}}
-.seal i{{font-style:normal;font-size:10pt;opacity:.7;margin:0 .2mm}}
+.seal i{{font-style:normal;font-size:10pt;color:#5a4a2c;margin:0 .2mm}}
 .c{{position:absolute;left:0;right:0;text-align:center}}
 .eye{{font-family:Jost;font-weight:500;text-transform:uppercase}}
 .script{{font-family:Pinyon;font-weight:400;line-height:1}}
@@ -83,25 +81,58 @@ body{{-webkit-print-color-adjust:exact;print-color-adjust:exact;text-rendering:g
 .pg{{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}}
 .orn{{display:block;margin:0 auto}}
 {css}
+/* ---- easy reading for every age ---- */
+.pg.kb .turut{{line-height:1.2}}
+.pg.kb .tm{{margin-top:2mm}}
+.pg p{{font-weight:600}}
+.pg .lbl{{font-size:7pt;letter-spacing:.12em;padding-left:.12em}}
+.pg .duo .ortu{{font-family:Corm;font-weight:600;font-size:12pt;line-height:1.22;margin-top:1mm}}
+.pg .duo .big{{font-size:34pt;margin-top:1.4mm}}
+.pg .duo .full{{font-size:11pt}}
+.pg .date{{font-size:9.5pt;letter-spacing:.24em;padding-left:.24em}}
+.pg .loc{{font-style:normal;font-weight:600;font-size:10.5pt}}
+.pg .kepada{{font-size:7.5pt;letter-spacing:.12em}}
+.pg .ditempat{{font-style:normal;font-weight:600;font-size:10pt}}
+.pg .salam{{font-size:7pt;letter-spacing:.1em;width:auto}}
+.pg .intro{{font-size:10pt;line-height:1.3}}
+.pg .pair .ortu{{font-family:Corm;font-weight:600;font-size:10.5pt;line-height:1.2}}
+.pg .pair .nm{{font-size:22pt}}
+.pg .pair .full{{font-size:10.5pt}}
+.pg .ev .t{{font-size:7.5pt;letter-spacing:.2em}}
+.pg .ev .day{{font-size:15pt}}
+.pg .ev .hj{{font-size:7.5pt;letter-spacing:.12em}}
+.pg .ev .jam,.pg .ev .at{{font-size:10.5pt;font-weight:600}}
+.pg .ev .addr{{font-size:9.5pt;font-weight:600}}
+.pg .close{{font-style:normal;font-size:9.5pt;line-height:1.3}}
+.pg .tm{{font-size:7.5pt;letter-spacing:.2em}}
+.pg .turut{{font-family:Jost;font-weight:400;font-size:7pt;line-height:1.3}}
+.pg .fam{{font-weight:600;font-size:9.5pt}}
+.pg .verse{{font-style:normal;font-weight:600;font-size:9pt}}
+.pg .verse cite{{font-size:7pt;letter-spacing:.14em}}
+.pg .web .tx{{font-size:8pt;font-weight:600}}
+.dark .pair .ortu,.dark .duo .ortu{{color:#f3ece0}}
+.dark .ev .addr,.dark .loc,.dark .ditempat{{color:#e2dbce}}
+.ivory .pair .ortu,.ivory .duo .ortu{{color:#1e3529}}
+.ivory .ev .addr,.ivory .loc,.ivory .ditempat,.ivory .verse{{color:#3c4842}}
 </style></head><body>{''.join(pages)}</body></html>"""
 
 
 # ===================================================================== LENGKUNG (die-cut arch, dark)
-LW, LH = 140, 210            # finished size
+LW, LH = 150, 225            # finished size
 PW, PH = LW + 2*B, LH + 2*B  # with bleed
 NIGHT = "#17201b"; GOLD = "#d4ad6e"; BLUSH = "#e6b8ad"; IVORY = "#f3ece0"; MUTED = "#c4bdb0"
 
 def l_frame():
     out = ""
     for i, k in enumerate((5.0, 6.6)):
-        out += (f'<path d="{arch_path(B, B, LW, LH, k)}" fill="none" stroke="{GOLD}" '
-                f'stroke-width="{0.32 if i == 0 else 0.2}" stroke-opacity="{.9 if i == 0 else .5}"/>')
+        out += (f'<path d="{arch_path(B, B, LW, LH, k)}" fill="none" stroke="{GOLD if i == 0 else '#8a7a4f'}" '
+                f'stroke-width="{0.32 if i == 0 else 0.22}"/>')
     # small star sitting on the apex of the outer frame
-    out += f'<circle cx="{PW/2}" cy="{B+5}" r="2.6" fill="#1a2620"/><path d="{star(PW/2, B+5, 2.1)}" fill="{GOLD}"/>'
+    out += f'<circle cx="{PW/2}" cy="{B+5}" r="2.6" fill="#1b2a22"/><path d="{star(PW/2, B+5, 2.1)}" fill="{GOLD}"/>'
     return f'<svg class="ov" viewBox="0 0 {PW} {PH}">{out}</svg>'
 
 L_CSS = f"""
-.dark{{background:radial-gradient(ellipse 85% 60% at 50% 34%,#24372d 0%,#1b2a22 52%,#151f19 100%);color:{IVORY}}}
+.dark{{background:#1b2a22;color:{IVORY}}}
 .dark .eye{{color:{BLUSH}}}
 .dark .muted{{color:{MUTED}}}
 .dark .gold{{color:{GOLD}}}
@@ -110,9 +141,9 @@ L_CSS = f"""
 .lf .date{{font-family:Jost;font-weight:500;font-size:8pt;letter-spacing:.42em;color:{GOLD};padding-left:.42em}}
 .lf .loc{{font-family:Corm;font-style:italic;font-weight:500;font-size:9.5pt;color:{MUTED}}}
 .kepada{{font-family:Jost;font-weight:500;font-size:6.3pt;letter-spacing:.22em;text-transform:uppercase;color:{BLUSH}}}
-.namebox{{width:82mm;height:15mm;margin:2.6mm auto 0;background:#fff;border-radius:2mm;border:.35mm solid {GOLD};box-shadow:0 0 0 .9mm rgba(212,173,110,.18)}}
+.namebox{{width:82mm;height:15mm;margin:2.6mm auto 0;background:#fff;border-radius:2mm;border:.35mm solid {GOLD}}}
 .ditempat{{font-family:Corm;font-style:italic;font-size:9pt;color:{MUTED};margin-top:2.6mm}}
-.lb .orn{{width:34mm;color:{GOLD};opacity:.85}}
+.lb .orn{{width:34mm;color:{GOLD}}}
 .lb .salam{{font-size:6.2pt;letter-spacing:.2em;line-height:1.7;width:84mm;margin:2.2mm auto 0;color:{BLUSH}}}
 .lb p{{font-family:Corm;font-weight:500}}
 .lb .intro{{font-size:9.4pt;line-height:1.35;width:98mm;margin:2mm auto 0}}
@@ -134,9 +165,10 @@ L_CSS = f"""
 .fpair{{grid-template-columns:1fr 7mm 1fr;width:120mm;margin:0 auto}}
 .fpair .full{{margin-top:0}}
 .fpair .and{{font-size:17pt}}
-.pair .and{{font-family:Pinyon;font-size:20pt;color:{GOLD};opacity:.8}}
+.pair .and{{font-family:Pinyon;font-size:20pt;color:{GOLD}}}
 .rule{{display:flex;align-items:center;gap:2mm;width:56mm;margin:3.4mm auto 0;color:{GOLD}}}
-.rule::before,.rule::after{{content:"";flex:1;height:.2mm;background:currentColor;opacity:.6}}
+.rule::before,.rule::after{{content:"";flex:1;height:.22mm;background:#8a7a4f}}
+.ivory .rule::before,.ivory .rule::after{{background:#cdb68f}}
 .rule b{{width:1.5mm;height:1.5mm;transform:rotate(45deg);border:.2mm solid currentColor}}
 .ev .t{{font-size:6.3pt;letter-spacing:.3em;margin-top:2.6mm;padding-left:.3em}}
 .ev .day{{font-family:Corm;font-weight:600;font-size:14.5pt;margin-top:.6mm}}
@@ -153,7 +185,7 @@ L_CSS = f"""
 .turut li::before{{content:"·";color:{GOLD};margin-right:1.2mm}}
 .fam{{font-family:Corm;font-weight:500;font-size:8.4pt;line-height:1.35;margin-top:1.2mm}}
 .evrow{{display:grid;grid-template-columns:1fr auto;gap:5mm;align-items:center;width:108mm;margin:.4mm auto 0}}
-.fam .sep{{font-size:4pt;vertical-align:.5mm;margin:0 2.2mm;opacity:.7}}
+.fam .sep{{font-size:4pt;vertical-align:.5mm;margin:0 2.2mm;color:#b48c52}}
 .web{{display:flex;align-items:center;justify-content:center;gap:2.6mm;margin-top:2.6mm}}
 .qr{{width:13mm;height:13mm;padding:1mm;border-radius:1.2mm;background:{IVORY}}}
 .qr svg{{display:block;width:100%;height:100%}}
@@ -164,21 +196,21 @@ L_CSS = f"""
 def lengkung():
     cx = PW / 2
     # ---------- front
-    wx, wy, ww, wh = cx - 36, B + 31, 72, 74
-    front = l_frame() + photo_window(wx, wy, ww, wh, GOLD, PW, PH) + seal(cx, wy + wh, 17, NIGHT) + f"""
-<div class="c eye" style="top:{B+18.5}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
+    wx, wy, ww, wh = cx - 37, B + 31, 74, 86
+    front = l_frame() + photo_window(wx, wy, ww, wh, GOLD, PW, PH, "#8a7a4f") + seal(cx, wy + wh, 17, NIGHT) + f"""
+<div class="c eye" style="top:{B+18.5}mm;font-size:7.5pt;letter-spacing:.3em;padding-left:.3em">The Wedding of</div>
 <div class="c" style="top:{wy+wh+10.5}mm">
  <div class="duo">
-  <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div>
+  <div><div class="eye lbl">Putra kedua dari</div><div class="ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div>
        <div class="script big">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
   <div class="script amp2">&amp;</div>
-  <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div>
+  <div><div class="eye lbl">Putri keenam dari</div><div class="ortu">Bapak Marda<br>&amp; Ibu Nurhati</div>
        <div class="script big">Febri</div><div class="full">Febri Yanti</div></div>
  </div>
  <div class="date" style="margin-top:3.6mm">SABTU · 02 · 01 · 2027</div>
  <div class="loc" style="margin-top:1.4mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
 </div>
-<div class="c" style="top:{B+LH-42}mm">
+<div class="c" style="top:{B+LH-44}mm">
   <div class="rule" style="margin-top:0;width:40mm"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
   <div class="namebox"></div>
@@ -191,9 +223,9 @@ def lengkung():
   <div class="eye salam">Assalamu'alaikum Warahmatullahi Wabarakatuh</div>
   <p class="intro">Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
   <div class="pair">
-    <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
+    <div><div class="eye lbl">Putra kedua dari</div><div class="ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
     <div class="and">&amp;</div>
-    <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div><div class="script nm">Febri</div><div class="full">Febri Yanti</div></div>
+    <div><div class="eye lbl">Putri keenam dari</div><div class="ortu">Bapak Marda<br>&amp; Ibu Nurhati</div><div class="script nm">Febri</div><div class="full">Febri Yanti</div></div>
   </div>
   <div class="rule"><b></b></div>
   <div class="ev">
@@ -237,15 +269,15 @@ Halaman ini jangan ikut dicetak.
 
 
 # ===================================================================== KOTAK (rectangle, ivory paper)
-KW, KH = 148, 210
+KW, KH = 150, 225
 QW, QH = KW + 2*B, KH + 2*B
 INK = "#1e3529"; KGOLD = "#a9844a"; ROSE = "#b0756a"; PAPER = "#f6f0e5"; SOFT = "#5d6a61"
 
 def k_frame():
     out = ""
     for i, k in enumerate((6.5, 8.0)):
-        out += (f'<rect x="{B+k}" y="{B+k}" width="{KW-2*k}" height="{KH-2*k}" fill="none" stroke="{KGOLD}" '
-                f'stroke-width="{0.3 if i == 0 else 0.18}" stroke-opacity="{1 if i == 0 else .6}"/>')
+        out += (f'<rect x="{B+k}" y="{B+k}" width="{KW-2*k}" height="{KH-2*k}" fill="none" stroke="{KGOLD if i == 0 else '#cdb68f'}" '
+                f'stroke-width="{0.3 if i == 0 else 0.2}"/>')
     # corner diamonds where the two rules meet
     for x, y in ((B+7.25, B+7.25), (B+KW-7.25, B+7.25), (B+7.25, B+KH-7.25), (B+KW-7.25, B+KH-7.25)):
         out += f'<rect x="{x-1.3}" y="{y-1.3}" width="2.6" height="2.6" fill="{PAPER}" stroke="{KGOLD}" stroke-width=".25" transform="rotate(45 {x} {y})"/>'
@@ -265,7 +297,7 @@ def corner_sprigs():
             f'<g {st} transform="translate({B+KW-11} {B+KH-11}) rotate(180)">{g}</g></svg>')
 
 K_CSS = f"""
-.ivory{{background:radial-gradient(ellipse 80% 65% at 50% 40%,#fbf7ef 0%,{PAPER} 60%,#eee5d5 100%);color:{INK}}}
+.ivory{{background:{PAPER};color:{INK}}}
 .ivory .eye{{color:{ROSE}}}
 .ivory .muted{{color:{SOFT}}}
 .kf .names{{font-size:42pt;color:{INK}}}
@@ -273,7 +305,7 @@ K_CSS = f"""
 .kf .date{{font-family:Jost;font-weight:500;font-size:8pt;letter-spacing:.42em;color:{KGOLD};padding-left:.42em}}
 .kf .loc{{font-family:Corm;font-style:italic;font-weight:500;font-size:9.5pt;color:{SOFT}}}
 .kf .kepada{{color:{ROSE}}}
-.kf .namebox{{width:70mm;border-color:{KGOLD};box-shadow:0 0 0 .9mm rgba(169,132,74,.12)}}
+.kf .namebox{{width:70mm;border-color:{KGOLD}}}
 .kf .ditempat{{color:{SOFT}}}
 .kb .orn{{width:30mm;color:{KGOLD}}}
 .kb .pair{{margin-top:1.2mm}}
@@ -293,7 +325,7 @@ K_CSS = f"""
 .verse cite{{display:block;font-style:normal;font-family:Jost;font-weight:500;font-size:6pt;letter-spacing:.24em;color:{KGOLD};margin-top:1mm}}
 .kb .ev .hj{{color:{KGOLD}}}
 .kb .ev .addr{{color:{SOFT}}}
-.kb .qr{{background:transparent;border:.25mm solid rgba(169,132,74,.7)}}
+.kb .qr{{background:transparent;border:.25mm solid {KGOLD}}}
 .kb .web .tx b{{color:{KGOLD}}}
 .kb .close{{font-size:9pt;line-height:1.35;width:112mm;margin:2.2mm auto 0;font-style:italic}}
 .kb .turut li::before{{color:{KGOLD}}}
@@ -302,21 +334,21 @@ K_CSS = f"""
 
 def kotak():
     cx = QW / 2
-    wx, wy, ww, wh = cx - 35, B + 30, 70, 72
-    front = k_frame() + corner_sprigs() + photo_window(wx, wy, ww, wh, KGOLD, QW, QH) + seal(cx, wy + wh, 17, "#17201b") + f"""
-<div class="c eye" style="top:{B+18}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
+    wx, wy, ww, wh = cx - 36, B + 30, 72, 84
+    front = k_frame() + corner_sprigs() + photo_window(wx, wy, ww, wh, KGOLD, QW, QH, "#cdb68f") + seal(cx, wy + wh, 17, "#17201b") + f"""
+<div class="c eye" style="top:{B+15.5}mm;font-size:7.5pt;letter-spacing:.3em;padding-left:.3em">The Wedding of</div>
 <div class="c" style="top:{wy+wh+10.5}mm">
  <div class="duo">
-  <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div>
+  <div><div class="eye lbl">Putra kedua dari</div><div class="ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div>
        <div class="script big">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
   <div class="script amp2">&amp;</div>
-  <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div>
+  <div><div class="eye lbl">Putri keenam dari</div><div class="ortu">Bapak Marda<br>&amp; Ibu Nurhati</div>
        <div class="script big">Febri</div><div class="full">Febri Yanti</div></div>
  </div>
  <div class="date" style="margin-top:3.6mm">SABTU · 02 · 01 · 2027</div>
  <div class="loc" style="margin-top:1.4mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
 </div>
-<div class="c" style="top:{B+KH-43}mm">
+<div class="c" style="top:{B+KH-46}mm">
   <div class="rule" style="margin-top:0;width:40mm;color:{KGOLD}"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
   <div class="namebox"></div>
@@ -328,9 +360,9 @@ def kotak():
   <div class="eye salam">Assalamu'alaikum Warahmatullahi Wabarakatuh</div>
   <p class="intro">Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
   <div class="pair">
-    <div><div class="eye lbl">Putra kedua dari</div><div class="script ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
+    <div><div class="eye lbl">Putra kedua dari</div><div class="ortu">Bapak Muriyadi (Muri)<br>&amp; Ibu Nuraeni (Eneng)</div><div class="script nm">Raja</div><div class="full">Muhamad Raja Ardiansyah</div></div>
     <div class="and">&amp;</div>
-    <div><div class="eye lbl">Putri keenam dari</div><div class="script ortu">Bapak Marda<br>&amp; Ibu Nurhati</div><div class="script nm">Febri</div><div class="full">Febri Yanti</div></div>
+    <div><div class="eye lbl">Putri keenam dari</div><div class="ortu">Bapak Marda<br>&amp; Ibu Nurhati</div><div class="script nm">Febri</div><div class="full">Febri Yanti</div></div>
   </div>
   <p class="verse">“Dan di antara tanda-tanda kekuasaan-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri supaya kamu dapat ketenangan hati dan dijadikannya kasih sayang di antara kamu.”<cite>QS. AR-RUM : 21</cite></p>
   <div class="rule"><b></b></div>
