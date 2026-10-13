@@ -174,6 +174,17 @@ footer{text-align:center;font-family:var(--sans);font-size:.7rem;color:var(--mut
 .hijri{font-family:var(--sans);font-size:.78rem;letter-spacing:.12em;color:var(--gold)}
 .map{width:100%;aspect-ratio:4/3;max-width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--night)}
 .map iframe{width:100%;height:100%;border:0;display:block}
+.map{position:relative}
+.map-tap{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:12px;text-decoration:none}
+.map-tap span{white-space:nowrap;display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:.74rem;letter-spacing:.06em;color:var(--night);background:var(--gold);padding:8px 14px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.map-tap svg{width:15px;height:15px}
+.event .actions{flex-direction:column;align-items:center;gap:14px;margin-top:16px}
+.event .actions .btn{padding:15px 18px;font-size:.82rem;letter-spacing:.07em;white-space:nowrap;width:min(270px,100%);justify-content:center}
+.event .actions .btn svg{width:20px;height:20px}
+@keyframes beat{0%,100%{scale:1;box-shadow:0 0 0 0 rgba(212,173,110,.55)}16%{scale:1.06}32%{scale:.99}48%{scale:1;box-shadow:0 0 0 15px rgba(212,173,110,0)}}
+.btn.pulse{animation:beat 2.6s cubic-bezier(.4,0,.2,1) 1.2s infinite}
+.btn.pulse-2{animation-delay:2.5s}
+.btn.pulse:hover,.btn.pulse:focus-visible{animation-play-state:paused}
 select{width:100%;font:inherit;font-size:1rem;color:var(--ivory);background:var(--moss);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 select:focus-visible{outline:2px solid var(--blush);outline-offset:3px}
 
@@ -486,7 +497,7 @@ const ACARA = [
   { nama: "Resepsi", tanggal: "2027-01-02T07:00:00+07:00", jam: "07.00 WIB – selesai",
     rumah: "RUMAH PAK MURI", hijriah: "24 Rajab 1448 H",
     tempat: "Kp. Peusar RT 002 / RW 001", alamat: "Kel. Binong, Kec. Curug, Kab. Tangerang, Banten 15810", maps: MAPS,
-    peta: "QH9P+P4Q Binong, Curug, Tangerang, Banten" }
+    peta: "QH9P+P4Q kontrakan pak muri, Jl. Kp. Peusar, Binong, Kec. Curug, Kabupaten Tangerang, Banten 15810" }
 ];
 const REKENING = [
   { bank: "ShopeePay", nomor: "0881010021694", atasNama: "Muhamad Raja Ardiansyah" },
@@ -859,19 +870,27 @@ ACARA.forEach(a => {
     f.title = "Peta lokasi " + a.nama; f.loading = "lazy"; f.referrerPolicy = "no-referrer-when-downgrade";
     f.src = "https://maps.google.com/maps?q=" + encodeURIComponent(a.peta) + "&z=16&output=embed";
     m.appendChild(f);
+    // The whole map opens the very same link as "Lihat Lokasi", so both always lead to one place
+    if (a.maps) {
+      const t = document.createElement("a");
+      t.className = "map-tap"; t.href = a.maps; t.target = "_blank"; t.rel = "noopener";
+      t.setAttribute("aria-label", "Buka lokasi di Google Maps");
+      t.innerHTML = `<span>${iconPin}Buka di Google Maps</span>`;
+      m.appendChild(t);
+    }
     card.insertBefore(m, card.querySelector(".actions"));
   }
   const act = card.querySelector(".actions");
   if (a.maps) {
     const m = document.createElement("a");
-    m.className = "btn"; m.href = a.maps; m.target = "_blank"; m.rel = "noopener";
+    m.className = "btn solid pulse"; m.href = a.maps; m.target = "_blank"; m.rel = "noopener";
     m.innerHTML = iconPin + "Lihat Lokasi";
     act.appendChild(m);
   }
   if (d) {
     const end = new Date(d.getTime() + 3 * 3600 * 1000);
     const c = document.createElement("a");
-    c.className = "btn"; c.target = "_blank"; c.rel = "noopener";
+    c.className = "btn pulse pulse-2"; c.target = "_blank"; c.rel = "noopener";
     c.href = "https://calendar.google.com/calendar/render?action=TEMPLATE"
       + "&text=" + encodeURIComponent(a.nama + " Raja & Febri")
       + "&dates=" + gcal(d) + "/" + gcal(end)
