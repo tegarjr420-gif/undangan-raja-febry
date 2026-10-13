@@ -68,7 +68,12 @@ p{margin:0;max-width:34ch}
 .cover.gone{visibility:hidden;pointer-events:none}
 .cover h1{font-family:var(--script);font-weight:400;font-size:clamp(3.1rem,14.5vw,4.4rem);line-height:1;margin:6px 0 4px;color:var(--ivory)}
 .cover .amp{color:var(--gold)}
-.guest{margin:22px 0 18px;display:grid;gap:4px}
+.guest{margin:16px 0 12px;display:grid;gap:4px}
+@media (max-height:700px){.cover{padding-bottom:calc(26px + env(safe-area-inset-bottom,0px))}.cover h1{font-size:clamp(2.8rem,13vw,3.6rem)}.guest{margin:10px 0 8px}.guest strong{font-size:1.3rem}.seal-disc{width:74px;height:74px}.seal-mono{font-size:1.95rem}}
+.ortu-cover{display:grid;gap:3px;margin:0 0 14px;max-width:420px;padding-top:12px;border-top:1px solid rgba(212,173,110,.35)}
+.ortu-cover .oc-name{font-weight:600;font-size:1.12rem;color:var(--ivory);text-shadow:0 1px 10px rgba(0,0,0,.55)}
+.ortu-cover .oc-lbl{font-family:var(--sans);font-size:.76rem;letter-spacing:.04em;color:#e3dccf;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.ortu-cover .oc-par{font-weight:600;font-size:clamp(1.2rem,5.4vw,1.42rem);line-height:1.3;color:#ecd09a;text-wrap:balance;text-shadow:0 1px 12px rgba(0,0,0,.65)}
 .guest strong{font-size:1.5rem;font-weight:600;color:var(--ivory);overflow-wrap:anywhere;max-width:100%}
 .guest small{font-family:var(--sans);font-size:.7rem;color:var(--muted)}
 
@@ -277,7 +282,8 @@ html{scroll-padding-bottom:110px}
 .cover>:nth-child(2){animation:fadeUp 1s .2s both}
 .cover>:nth-child(3){animation:writeIn 1.9s .5s cubic-bezier(.6,.1,.2,1) both}
 .cover>:nth-child(4){animation:fadeUp 1s .9s both}
-.cover>:nth-child(5){animation:fadeUp 1s 1.3s both}
+.cover>:nth-child(5){animation:fadeUp 1s 1.15s both}
+.cover>:nth-child(6){animation:fadeUp 1s 1.4s both}
 
 .shimmer{background:linear-gradient(100deg,var(--ivory) 35%,var(--gold) 50%,var(--ivory) 65%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 11s linear infinite;padding-inline:.15em}
 
@@ -334,6 +340,11 @@ h2.pre::after{width:0}
     <span class="muted">Kepada Yth. Bapak/Ibu/Saudara/i</span>
     <strong id="guestName">Tamu Undangan</strong>
     <small>Mohon maaf apabila ada kesalahan penulisan nama atau gelar</small>
+  </div>
+  <div class="ortu-cover">
+    <span class="oc-name">Muhamad Raja Ardiansyah</span>
+    <span class="oc-lbl">Anak kedua dari orang tua :</span>
+    <span class="oc-par">Bpk. Muriyadi (MURI) &amp; Ibu Nuraeni (ENENG)</span>
   </div>
   <button class="seal" id="openBtn" type="button" aria-label="Buka undangan">
     <span class="seal-disc"><span class="seal-mono">R<i>&amp;</i>F</span></span>
