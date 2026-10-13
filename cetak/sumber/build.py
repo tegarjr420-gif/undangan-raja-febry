@@ -128,7 +128,8 @@ L_CSS = f"""
 .ev .day{{font-family:Corm;font-weight:600;font-size:14.5pt;margin-top:.6mm}}
 .ev .hj{{font-family:Jost;font-weight:500;font-size:6pt;letter-spacing:.2em;color:{GOLD};margin-top:.4mm}}
 .ev .jam{{font-family:Corm;font-weight:500;font-size:9.6pt;margin-top:.8mm}}
-.ev .at{{font-family:Corm;font-weight:600;font-size:9.6pt;margin-top:1.4mm}}
+.ev .rumah{{font-family:Corm;font-weight:600;font-size:12.5pt;letter-spacing:.05em;margin-top:1.4mm;line-height:1.15}}
+.ev .at{{font-family:Corm;font-weight:500;font-size:9.6pt;margin-top:.2mm}}
 .ev .addr{{font-family:Corm;font-weight:500;font-size:8.6pt;color:{MUTED}}}
 .lb .close{{font-size:8.8pt;line-height:1.35;width:104mm;margin:3mm auto 0;font-style:italic}}
 .tm{{font-size:6.2pt;letter-spacing:.3em;margin-top:2.8mm;padding-left:.3em}}
@@ -154,7 +155,7 @@ def lengkung():
 <div class="c eye" style="top:{B+18.5}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
 <div class="c script names" style="top:{wy+wh+12}mm">Raja<span class="amp">&amp;</span>Febri</div>
 <div class="c date" style="top:{wy+wh+30.5}mm">SABTU · 02 · 01 · 2027</div>
-<div class="c loc" style="top:{wy+wh+36}mm">Kp. Peusar, Binong, Curug, Tangerang</div>
+<div class="c loc" style="top:{wy+wh+36}mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
 <div class="c" style="top:{B+LH-38}mm">
   <div class="rule" style="margin-top:0;width:40mm"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
@@ -180,6 +181,7 @@ def lengkung():
         <div class="day">Sabtu, 2 Januari 2027</div>
         <div class="hj">24 RAJAB 1448 H</div>
         <div class="jam">Pukul 07.00 WIB – selesai</div>
+        <div class="rumah">RUMAH PAK MURI</div>
         <div class="at">Kp. Peusar RT 002 / RW 001</div>
         <div class="addr">Kel. Binong, Kec. Curug, Kab. Tangerang, Banten 15810</div>
       </div>
@@ -271,7 +273,7 @@ K_CSS = f"""
 .kb .web .tx b{{color:{KGOLD}}}
 .kb .close{{font-size:9pt;line-height:1.35;width:112mm;margin:2.8mm auto 0;font-style:italic}}
 .kb .turut li::before{{color:{KGOLD}}}
-.kb .turut{{width:124mm;font-size:7.3pt}}
+.kb .turut{{width:124mm;font-size:7.3pt;line-height:1.12}}
 """
 
 def kotak():
@@ -281,7 +283,7 @@ def kotak():
 <div class="c eye" style="top:{B+18}mm;font-size:6.6pt;letter-spacing:.42em;padding-left:.42em">The Wedding of</div>
 <div class="c script names" style="top:{wy+wh+12}mm">Raja<span class="amp">&amp;</span>Febri</div>
 <div class="c date" style="top:{wy+wh+30.5}mm">SABTU · 02 · 01 · 2027</div>
-<div class="c loc" style="top:{wy+wh+36}mm">Kp. Peusar, Binong, Curug, Tangerang</div>
+<div class="c loc" style="top:{wy+wh+36}mm">Rumah Pak Muri · Kp. Peusar, Binong, Curug</div>
 <div class="c" style="top:{B+KH-39}mm">
   <div class="rule" style="margin-top:0;width:40mm;color:{KGOLD}"><b></b></div>
   <div class="kepada" style="margin-top:3.6mm">Kepada Yth. Bapak/Ibu/Saudara/i</div>
@@ -289,7 +291,7 @@ def kotak():
   <div class="ditempat">di Tempat</div>
 </div>"""
     back = k_frame() + f"""
-<div class="c" style="top:{B+11.5}mm">
+<div class="c" style="top:{B+10.5}mm">
   {ORN}
   <div class="eye salam">Assalamu'alaikum Warahmatullahi Wabarakatuh</div>
   <p class="intro">Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:</p>
@@ -307,6 +309,7 @@ def kotak():
         <div class="day">Sabtu, 2 Januari 2027</div>
         <div class="hj">24 RAJAB 1448 H</div>
         <div class="jam">Pukul 07.00 WIB – selesai</div>
+        <div class="rumah">RUMAH PAK MURI</div>
         <div class="at">Kp. Peusar RT 002 / RW 001</div>
         <div class="addr">Kel. Binong, Kec. Curug, Kab. Tangerang, Banten 15810</div>
       </div>

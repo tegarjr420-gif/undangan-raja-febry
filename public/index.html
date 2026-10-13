@@ -167,6 +167,7 @@ footer{text-align:center;font-family:var(--sans);font-size:.7rem;color:var(--mut
 .seal.pressed .seal-disc{transform:scale(.88)}
 .seal:focus-visible .seal-disc{outline:2px solid var(--blush);outline-offset:5px}
 /* Map, hijri, ticket, share */
+.event .rumah{font-family:var(--serif);font-weight:600;font-size:1.32rem;letter-spacing:.06em;color:var(--ivory);margin-top:10px;line-height:1.25}
 .hijri{font-family:var(--sans);font-size:.78rem;letter-spacing:.12em;color:var(--gold)}
 .map{width:100%;aspect-ratio:4/3;max-width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--night)}
 .map iframe{width:100%;height:100%;border:0;display:block}
@@ -475,9 +476,10 @@ h2.pre::after{width:0}
 /* ===== DATA UNDANGAN — isi bagian ini saat informasinya sudah ada ===== */
 /* Lagu latar: file di folder yang sama, mulai dari detik ke-"mulai" (0 = dari awal) */
 const LAGU = { src: "lagu.mp3", mulai: 0 };
-const MAPS = "https://maps.app.goo.gl/VHadyFS3yDngNn218?g_st=ac";
+const MAPS = "https://maps.app.goo.gl/PN9Syb1oV2z3bTQG8?g_st=ac";
 const ACARA = [
   { nama: "Resepsi", tanggal: "2027-01-02T07:00:00+07:00", jam: "07.00 WIB – selesai",
+    rumah: "RUMAH PAK MURI", hijriah: "24 Rajab 1448 H",
     tempat: "Kp. Peusar RT 002 / RW 001", alamat: "Kel. Binong, Kec. Curug, Kab. Tangerang, Banten 15810", maps: MAPS,
     peta: "QH9P+P4Q Binong, Curug, Tangerang, Banten" }
 ];
@@ -834,14 +836,16 @@ ACARA.forEach(a => {
   const card = document.createElement("div");
   card.className = "event";
   const d = a.tanggal ? new Date(a.tanggal) : null;
-  card.innerHTML = `<h3></h3><p class="fullname tgl"></p><p class="hijri"></p><p class="muted jam"></p><p class="tempat"></p><p class="muted alamat"></p><div class="actions"></div>`;
+  card.innerHTML = `<h3></h3><p class="fullname tgl"></p><p class="hijri"></p><p class="muted jam"></p><p class="rumah"></p><p class="tempat"></p><p class="muted alamat"></p><div class="actions"></div>`;
   card.querySelector("h3").textContent = a.nama;
   fill(card.querySelector(".tgl"), d ? fmt(d) : "", "Hari, tanggal menyusul");
   fill(card.querySelector(".jam"), a.jam, "Pukul … WIB");
   fill(card.querySelector(".tempat"), a.tempat, "Nama tempat");
+  if (a.rumah) card.querySelector(".rumah").textContent = a.rumah; else card.querySelector(".rumah").remove();
   fill(card.querySelector(".alamat"), a.alamat, "Alamat lengkap lokasi");
   const hj = card.querySelector(".hijri");
-  try { hj.textContent = d ? new Intl.DateTimeFormat("id-ID-u-ca-islamic-umalqura", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jakarta" }).format(d) : ""; } catch (e) { hj.textContent = ""; }
+  if (a.hijriah) hj.textContent = a.hijriah;
+  else try { hj.textContent = d ? new Intl.DateTimeFormat("id-ID-u-ca-islamic-umalqura", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jakarta" }).format(d) : ""; } catch (e) { hj.textContent = ""; }
   if (!hj.textContent) hj.remove();
   if (a.peta) {
     const m = document.createElement("div");
@@ -866,7 +870,7 @@ ACARA.forEach(a => {
     c.href = "https://calendar.google.com/calendar/render?action=TEMPLATE"
       + "&text=" + encodeURIComponent(a.nama + " Raja & Febri")
       + "&dates=" + gcal(d) + "/" + gcal(end)
-      + "&location=" + encodeURIComponent([a.tempat, a.alamat].filter(Boolean).join(", "));
+      + "&location=" + encodeURIComponent([a.rumah, a.tempat, a.alamat].filter(Boolean).join(", "));
     c.innerHTML = iconCal + "Simpan ke Kalender";
     act.appendChild(c);
   }
